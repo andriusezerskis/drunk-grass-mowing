@@ -91,13 +91,6 @@ class Grid:
             modified.add(newTile)
         return modified
 
-    def updateTemperature(self, tile: Tile) -> None:
-        if tile.getDisaster():
-            temperature = (self.regionHandler.sampleTemperature(tile.getPos().x(), tile.getPos().y()) +
-                           tile.getDisaster().getTemperature())
-        else:
-            temperature = (self.regionHandler.sampleTemperature(tile.getPos().x(), tile.getPos().y()))
-        tile.updateTemperature(temperature)
 
     def getTile(self, pos: Point) -> Tile:
         if not self.isInGrid(pos):

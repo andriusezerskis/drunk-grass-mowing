@@ -39,20 +39,15 @@ class Animal(Entity, ABC):
     def getViewDistance(cls) -> int:
         return cls._getParameter("view_distance")
 
-    @classmethod
-    def getPreferredTemperature(cls) -> float:
-        return cls._getParameter("preferred_temperature")
 
     @classmethod
     def isPrey(cls, prey: Type[Entity]):
         return prey.__name__ in cls._getPreys()
 
-    def getTemperatureDifference(self) -> float:
-        return abs(self.getTile().getTemperature() - self.getPreferredTemperature())
 
     @override
     def evolve(self) -> bool:
-        self.hunger += 1 + self.getTemperatureDifference() / 10
+        self.hunger += 1
 
         return super().evolve()
 
@@ -100,9 +95,6 @@ class Animal(Entity, ABC):
             score += 100
         elif len(self._local_information["predators"]["viewable"]) > 0:
             score += 10
-
-        # incentive to move if the temperature is too bad
-        score += self.getTemperatureDifference()
 
         # incentive to move to find food if hungry
         if len(self._local_information["preys"]["adjacent"]) == 0:

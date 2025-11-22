@@ -31,9 +31,6 @@ from model.entities.entity import Entity
 from model.player.player import Player
 from model.renderMonitor import RenderMonitor
 from model.action import Action
-from model.disasters.disaster import Disaster
-from model.disasters.firedisaster import FireDisaster
-from model.disasters.icedisaster import IceDisaster
 from parameters import ViewText
 
 
@@ -59,38 +56,6 @@ class Simulation:
         EntitiesGenerator().generateEntities(grid)
         return grid
 
-    def bordinatorExecution(self, zone: str, radius: int, disaster: str, entityChosen, initialPos: Point):
-        tiles: list[Tile] = []
-        disasterType: Type[Disaster] | None = {ViewText.DISASTER_FIRE_TEXT: FireDisaster,
-                                               ViewText.DISASTER_ICE_TEXT: IceDisaster,
-                                               ViewText.DISASTER_INVASION_TEXT: None}[disaster]
-
-        entityType = None
-        for entity in getTerminalSubclassesOfClass(Entity):
-            if entity.__name__ == entityChosen:
-                entityType = entity
-                break
-
-        assert entityType
-
-        if zone == "Rayon":
-            tiles = self.grid.getTilesInManhattanCircle(initialPos, radius)
-        elif zone == "Ile":
-            initialTile = self.grid.getTile(initialPos)
-            tiles = self.grid.getIsland(initialTile)
-
-        for tile in tiles:
-            if zone == "Rayon":
-                strength = abs(1 - initialPos.manhattanDistance(tile.getPos()) / (radius * 2))
-            else:
-                strength = 1
-
-            if disasterType is not None:
-                disasterType.applyDisaster(tile, strength)
-            else:
-                tile.addNewEntity(entityType)
-
-        return tiles
 
     def step(self) -> None:
         self.modifiedTiles = set()
@@ -102,8 +67,6 @@ class Simulation:
         self.updateWaterLevel()
 
         for tile in self.grid:
-            self.grid.updateTemperature(tile)
-            self.handleDisaster(tile)
             entity = tile.getEntity()
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
@@ -133,19 +96,7 @@ class Simulation:
             tile.addNewEntity(choice(validTypes))
             self.addModifiedTiles(tile)
 
-    def handleDisaster(self, tile: Tile):
-        if not tile.getDisaster():
-            return
 
-        entity = tile.getEntity()
-        if entity and isinstance(entity, Entity):
-            entity.inflictDamage(tile.getDisaster().getDamagePoints())
-
-        if tile.getDisaster().getStrength() > 0:
-            tile.getDisaster().decreaseStrength()
-            self.addModifiedTiles(tile)
-        else:
-            tile.removeDisaster()
 
     def getUpdatedTiles(self):
         return self.modifiedTiles

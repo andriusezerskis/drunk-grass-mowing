@@ -24,7 +24,6 @@ from model.renderMonitor import RenderMonitor
 from controller.mainWindowController import MainWindowController
 
 from view.tilerenderers.classictilerenderer import ClassicTileRenderer
-from view.tilerenderers.temperaturetilerenderer import TemperatureTileRenderer
 from view.tilerenderers.depthtilerenderer import DepthTileRenderer
 from view.tilerenderers.tilerenderer import TileRenderer
 from view.tilerenderers.unfilteredterraintilerenderer import UnfilteredTerrainTileRenderer
@@ -44,8 +43,7 @@ class Movement(Enum):
 
 
 class GraphicalGrid(QGraphicsView):
-    tileRenderers = [ClassicTileRenderer,
-                     TemperatureTileRenderer, DepthTileRenderer, UnfilteredTerrainTileRenderer]
+    tileRenderers = [ClassicTileRenderer,DepthTileRenderer, UnfilteredTerrainTileRenderer]
 
     def __init__(self, gridSize: Point, grid: Grid, simulation: Simulation, renderingMonitor: RenderMonitor):
 

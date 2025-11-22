@@ -24,11 +24,7 @@ class TerrainParameters(GenericParameters, ABC):
 
     # # Climate
     # Temperature difference between winter and summer
-    SEASON_TEMPERATURE_DIFFERENCE: int = None
-    MAX_TEMPERATURE_DIFFERENCE: int = None  # in degrees
-    MAX_RANDOM_TEMPERATURE_DIFFERENCE: int = None  # in degrees
     YEAR_DURATION: int = None  # year duration in timesteps
-    AVERAGE_TEMPERATURE: int = None  # in degrees
     # number of timesteps before an update (for performance)
     NB_STEP_BEFORE_UPDATE: int = None
 
@@ -89,9 +85,6 @@ class ViewText(GenericParameters, ABC):
     AGE_TEXT: str = None
     NAME_TEXT: str = None
     HUNGER_TEXT: str = None
-    DISASTER_ICE_TEXT: str = None
-    DISASTER_FIRE_TEXT: str = None
-    DISASTER_INVASION_TEXT: str = None
 
     @classmethod
     @override
@@ -109,11 +102,3 @@ class CraftParameters(GenericParameters, ABC):
         return "crafting_parameters.json"
 
 
-class DisasterParameters(GenericParameters, ABC):
-    FIRE_DAMAGE: int = None
-    ICE_DAMAGE: int = None
-
-    @classmethod
-    @override
-    def getFileName(cls) -> str:
-        return "disasters_parameters.json"

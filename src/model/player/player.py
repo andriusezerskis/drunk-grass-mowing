@@ -53,16 +53,17 @@ class Player(Movable):
         return self.grid.getTile(self.pos)
 
     def move(self, movement: Point):
-        oldPosition = copy(self.pos)
-        wantedPosition = self.pos + movement
-        if (self.grid.isInGrid(wantedPosition)
-                and not self.grid.getTile(wantedPosition).hasEntity()
-                and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
-            self.grid.getTile(oldPosition).removeEntity()
-            self.grid.getTile(wantedPosition).setEntity(self)
-            self.pos = wantedPosition
-            return True
-        return False
+        for i in self.pos:
+            oldPosition = copy(self.pos)
+            wantedPosition = self.pos + movement
+            if (self.grid.isInGrid(wantedPosition)
+                    and not self.grid.getTile(wantedPosition).hasEntity()
+                    and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
+                self.grid.getTile(oldPosition).removeEntity()
+                self.grid.getTile(wantedPosition).setEntity(self)
+                self.pos = wantedPosition
+                return True
+            return False
 
     def addInInventory(self, loots: Dict[str, int]):
         for loot_name in loots:
@@ -85,10 +86,6 @@ class Player(Movable):
     def isValidTileType(self, tileType: Type[Tile]):
         return self.claimed_entity.isValidTileType(tileType)
 
-    def getPreferredTemperature(self) -> float:
-        assert isinstance(self.claimed_entity, Animal)
-        return self.claimed_entity.getPreferredTemperature()
-
     def kill(self):
         pass
         #PlayerDockView.lageEntity(True)
@@ -101,4 +98,3 @@ class Player(Movable):
             self.claimed_entity.kill()
         self.pos = None
         self.claimed_entity = None
-        self.inventory = {loot_class.__name__: 0 for loot_class in getTerminalSubclassesOfClass(Loot)}
