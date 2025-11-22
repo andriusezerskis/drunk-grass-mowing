@@ -19,16 +19,10 @@ from view.mainWindow import Window
 class StartWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Simulation")
         self.setWindowIcon(QIcon(ViewParameters.COW_TEXTURE_PATH))
-        self.setGeometry(0, 0, 1000, 400)
+        self.setGeometry(0, 0, 400, 400)
 
         self.layout = QVBoxLayout()
-        label = QLabel("Simulation")
-        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        label.setFont(QFont('Small Fonts', 80))
-        label.setObjectName("Transparent")
-        self.layout.addWidget(label)
         container = QWidget()
         container.setLayout(self.layout)
         container.setObjectName("Transparent")
