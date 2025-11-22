@@ -36,13 +36,15 @@ class Window(QMainWindow):
 
         self.view = GraphicalGrid(
             gridSize, simulation.getGrid(), simulation, self.renderingMonitor)
+        self.gridController = GridController(
+            self.view, simulation, self.renderingMonitor)
         self.mainWindowController = MainWindowController(
             self.view, simulation, self)
+
         self.layout = QHBoxLayout()
         self.drawButtons()
 
-        self.gridController = GridController(
-            self.view, simulation, self.renderingMonitor)
+
 
         self.setCentralWidget(self.view)
         self.simulation = simulation

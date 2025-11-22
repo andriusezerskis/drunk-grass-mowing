@@ -168,5 +168,6 @@ class GridGenerator(AutomaticGenerator):
 
         grid = Grid(self.gridSize)
         grid.initialize(self.matrix, islands)
+        
         print("Terrain generated in ", time.time() - start, "s")
         return grid

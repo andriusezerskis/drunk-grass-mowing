@@ -8,6 +8,7 @@ from typing import Tuple
 from PyQt6.QtCore import *
 from utils import Point
 
+from model.entities.human import Human
 
 
 class GridController:
@@ -20,6 +21,7 @@ class GridController:
             cls.graphicalGrid = graphicalGrid
             cls.simulation = simulation
             cls.renderingMonitor = renderingMonitor
+
         return cls.instance
 
     @staticmethod

@@ -16,6 +16,7 @@ from model.terrains.tiles import Water
 
 from controller.gridController import GridController
 from controller.entityInfoController import EntityInfoController
+from model.entities.human import Human
 
 
 class MainWindowController:
@@ -30,6 +31,18 @@ class MainWindowController:
             cls.simulation = simulation
             cls.entityController = EntityInfoController()
             # cls.gridController = GridController.getInstance()
+
+            tile = cls.getClickedTile(cls, Point(10,10))
+            tile.addNewEntity(Human, 1)
+
+            cls.entityController.setEntity(tile.getEntity())
+            cls.graphicalGrid.chosenEntity = tile.getEntity()
+            GridController.getInstance().controlEntity(tile)
+            cls.entityController.update()
+            cls.graphicalGrid.updateHighlighted()
+
+            cls.graphicalGrid.redraw(tile)
+
         return cls.instance
 
     @staticmethod
