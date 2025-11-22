@@ -146,7 +146,7 @@ class RenderMonitor:
         return self.getZoomIndex() == len(self.zooms) - 1
 
     def isMinimumZoomIndex(self):
-        return self.getZoomIndex() == 0
+        return self.getZoomIndex() == 2
 
     def getZoomFactor(self):
         return self.playerZoomFactor if self.playerZoomFactor is not None else self.zoomFactor

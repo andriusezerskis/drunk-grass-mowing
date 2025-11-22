@@ -16,7 +16,7 @@ from math import cos, pi
 # do not trust your IDE, we need it for the globals() function
 
 from model.entities.plant import Plant
-
+from controller.gridController import GridController
 from model.gridloader import GridLoader
 
 ###
@@ -100,6 +100,14 @@ class Simulation:
 
         print("mowed: ", self.mowed)
         print(f"compute time : {time.time() - t}")
+        if (random() < self.player.drunk):
+            if (random() > 0.5):
+                GridController.getInstance().zoomOut()
+            else:
+                GridController.getInstance().zoomIn()
+            GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos()) 
+        
+
 
     def handleDisaster(self, tile: Tile):
         if not tile.getDisaster():

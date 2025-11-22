@@ -103,8 +103,7 @@ class GridController:
                 return size if is_size else size - Point(1, 1)
 
     def zoomIn(self):
-        if self.simulation.hasPlayer():
-            return
+
 
         if self.renderingMonitor.getZoomIndex() < len(self.renderingMonitor.zooms)-1:
             self.renderingMonitor.zoomIndex += 1
@@ -133,9 +132,6 @@ class GridController:
         return upperTile, lowerTile, width, height
 
     def zoomOut(self):
-        if self.simulation.hasPlayer():
-            return
-
         if self.renderingMonitor.getZoomIndex() > 0:
             scaler = 1 / \
                 self.renderingMonitor.zooms[self.renderingMonitor.getZoomIndex(

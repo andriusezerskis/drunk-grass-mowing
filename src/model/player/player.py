@@ -37,6 +37,7 @@ class Player(Movable):
         self.claimed_entity: Entity | None = None
         self.visitedTiles: list[Tile] = []
         self.hamstersKilled = 0
+        self.drunk = 0
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -70,6 +71,7 @@ class Player(Movable):
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
                     self.hamstersKilled += 1
+                    self.drunk += 10
                     self.sound = QSoundEffect()
                     self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
                     self.sound.setVolume(0.5)
