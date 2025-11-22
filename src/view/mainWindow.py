@@ -5,9 +5,10 @@ Date: December 2023
 """
 
 import time
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, QLabel, QVBoxLayout
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QMovie
 
 from parameters import ViewParameters, ViewText
 from utils import Point, getTerminalSubclassesOfClass
@@ -43,6 +44,7 @@ class Window(QMainWindow):
 
         self.layout = QHBoxLayout()
         self.drawButtons()
+        
 
 
 
@@ -54,7 +56,22 @@ class Window(QMainWindow):
         self.paused = False
 
         self.drawButtons2()
-        self.view.setLayout(self.layout)
+        
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.addLayout(self.layout)
+        self.animationLabel = QLabel()
+        self.animationLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+
+        self.movie = QMovie("text.gif")
+        self.animationLabel.setMovie(self.movie)
+        self.animationLabel.setScaledContents(True)
+        self.animationLabel.resize(300,300)
+        self.movie.start()
+        
+        self.verticalLayout.addWidget(self.animationLabel, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.view.setLayout(self.verticalLayout)
 
         self.initTimer()
 
