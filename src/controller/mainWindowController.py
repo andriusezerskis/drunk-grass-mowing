@@ -79,9 +79,6 @@ class MainWindowController:
 
                 self.entityController.update()
                 self.graphicalGrid.updateHighlighted()
-            elif not fish_click:
-                self.playerControll(tile)
-                return
 
             if not tile.hasEntity() and not self.simulation.hasPlayer():
                 self.graphicalGrid.chosenEntity = None
