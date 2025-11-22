@@ -25,7 +25,7 @@
 	},
 	"MowedGrass": {
 		"texture_path": ["land/land_mowed.png"],
-		"level": 0.75,
+		"level": 0.7,
 		"filter_color": "#004d00",
 		"ascending_gradient": 1
 	}

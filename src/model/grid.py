@@ -91,20 +91,23 @@ class Grid:
             modified.add(newTile)
         return modified
 
-    def updateMowedGrassTiles(self, mowed: set[Tile], mowedGrassTileType: type[Tile]) -> set[Tile]:
-        modified = set()
-        for tile in self.tiles:
-            if tile in mowed:
-                newTile = Tile.copyWithDifferentTypeOf(tile, mowedGrassTileType)
+    # def updateMowedGrassTiles(self, mowed: set[Tile], mowedGrassTileType: type[Tile]) -> set[Tile]:
+    #     modified = set()
+    #     for tile in self.tiles:
+    #         for tile_x in tile
+    #         for mowed_tile in mowed:
+    #             if tile.getPos() == mowed_tile.getPos():
+    #                 print("reached")
+    #                 newTile = Tile.copyWithDifferentTypeOf(tile, mowedGrassTileType)
 
-                if tile.hasEntity() and not newTile.hasEntity():
-                    tile.getEntity().kill()
-                    tile.removeEntity()
+    #                 # if tile.hasEntity() and not newTile.hasEntity():
+    #                 #     tile.getEntity().kill()
+    #                 #     tile.removeEntity()
 
-                self.tiles[tile.getPos().y()][tile.getPos().x()] = newTile
-                modified.add(newTile)
+    #                 self.tiles[tile.getPos().y()][tile.getPos().x()] = newTile
+    #                 modified.add(newTile)
 
-        return modified
+    #     return modified
 
 
     def getTile(self, pos: Point) -> Tile:

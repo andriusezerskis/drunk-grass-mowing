@@ -5,7 +5,7 @@
 			"lawnmower.png"
 		],
 		"icon_texture_path": "lawnmower.png",
-		"valid_tiles": ["Land"],
+		"valid_tiles": ["Land", "MowedGrass"],
 		"color": "#E6CF6C",
 		"french_name": "Humain",
 		"preys": ["Crab", "Tree", "Fish", "Hamster"],
@@ -78,12 +78,12 @@
 			"flowers/flower3.png"
 		],
 		"icon_texture_path": "flowers/flower.png",
-		"duplication_probability": 0.07,
-		"spontaneous_generation": 1,
+		"duplication_probability": 0.01,
+		"spontaneous_generation": 0.01,
 		"french_name": "Fleur",
 		"valid_tiles": ["Land"],
 		"color": "#F7AB80",
-		"spawn_weight": 1,
+		"spawn_weight": 0.01,
 		"health_points": 10,
 		"loots": {},
 		"symbol": "f"
@@ -124,7 +124,7 @@
 		"valid_tiles": ["Land"],
 		"preys": ["Flower"],
 		"color": "#D2A679",
-		"spawn_weight": 0.2,
+		"spawn_weight": 0.01,
 		"preferred_temperature": 15,
 		"health_points": 30,
 		"loots": {},
