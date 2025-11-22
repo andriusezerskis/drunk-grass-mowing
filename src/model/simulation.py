@@ -72,17 +72,20 @@ class Simulation:
         for tile in self.grid:
             self.handleDisaster(tile)
             entity = tile.getEntity()
+
+            if type(tile) is MowedGrass:
+                timeToRegrow = tile.get_time_to_regrow()
+                if timeToRegrow == 0:
+                    newTile = Tile.copyWithDifferentTypeOf(tile, Land)
+                    self.modifiedTiles.add(newTile)
+                    # self.mowed.remove(tile)
+                else:
+                    tile.decrease_time_to_regrow()
+                continue
+
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
                 self.updatedEntities.add(entity)
-            # elif entity and isinstance(entity, Player) and type(tile) is Land:
-            #     # self.mowed.add(tile)
-            #     # add all visited tiles to mowed
-            #     for tile in self.player.visitedTiles:
-            #         self.mowed.add(tile)
-            #     self.addModifiedTiles(tile)
-            #     newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
-            #     self.modifiedTiles.add(newTile)
             elif not entity:
                 self.spontaneousGeneration(tile)
 

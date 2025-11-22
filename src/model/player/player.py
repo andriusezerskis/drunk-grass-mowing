@@ -10,6 +10,9 @@ from typing import Dict, Type
 from overrides import override
 from model.disasters.bloodsplatter import BloodSplatter
 
+from PyQt6.QtMultimedia import QSoundEffect
+from PyQt6.QtCore import QUrl
+
 
 from model.terrains.tiles import MowedGrass
 from utils import Point, getTerminalSubclassesOfClass
@@ -67,6 +70,10 @@ class Player(Movable):
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
                     self.hamstersKilled += 1
+                    self.sound = QSoundEffect()
+                    self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
+                    self.sound.setVolume(0.5)
+                    self.sound.play()
 
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()
