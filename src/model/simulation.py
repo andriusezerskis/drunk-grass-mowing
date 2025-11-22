@@ -99,6 +99,20 @@ class Simulation:
         print("mowed: ", self.mowed)
         print(f"compute time : {time.time() - t}")
 
+    def handleDisaster(self, tile: Tile):
+        if not tile.getDisaster():
+            return
+
+        entity = tile.getEntity()
+        if entity and isinstance(entity, Entity):
+            entity.inflictDamage(tile.getDisaster().getDamagePoints())
+
+        if tile.getDisaster().getStrength() > 0:
+            tile.getDisaster().decreaseStrength()
+            self.addModifiedTiles(tile)
+        else:
+            tile.removeDisaster()
+
     def spontaneousGeneration(self, tile: Tile):
         assert not tile.hasEntity()
 
