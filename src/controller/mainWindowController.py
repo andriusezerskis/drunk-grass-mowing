@@ -119,6 +119,8 @@ class MainWindowController:
         else:
             self.mainWindow.zoomOutButton.setStyleSheet(None)
 
+        
+
     def onZoomOut(self):
         if self.simulation.renderMonitor.isMinimumZoomIndex():
             self.mainWindow.zoomOutButton.setStyleSheet(ViewParameters.LOCKED_BUTTON)

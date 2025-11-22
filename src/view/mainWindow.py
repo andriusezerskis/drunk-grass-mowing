@@ -5,7 +5,7 @@ Date: December 2023
 """
 
 import time
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, QLabel, QVBoxLayout
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, QLabel, QVBoxLayout,QProgressBar
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QMovie
@@ -100,7 +100,7 @@ class Window(QMainWindow):
         self.totalTime += 1
         self.simulation.step()
         self.updateGrid()
-
+        self.updateMentalHealth(self.simulation.getPlayer().hamstersKilled)
         self.showTime()
 
     def showTime(self):
@@ -176,20 +176,16 @@ class Window(QMainWindow):
         self.saveGridButton.clicked.connect(self.saveGrid)
 
 
-        self.layout.addStretch()
-        self.layout.addWidget(
-            self.pauseButton, alignment=Qt.AlignmentFlag.AlignTop)
-        self.layout.addWidget(
-            self.fastFbutton, alignment=Qt.AlignmentFlag.AlignTop)
-        self.layout.addWidget(
-            self.timebutton,  alignment=Qt.AlignmentFlag.AlignTop)
-        self.layout.addWidget(
-            self.changeTileRendererButton, alignment=Qt.AlignmentFlag.AlignTop)
+        self.mentalHealthBar = QProgressBar()
+        self.mentalHealthBar.setRange(0, 100)
+        self.mentalHealthBar.setValue(0)
+        self.mentalHealthBar.setValue(100)
 
         self.layout.addWidget(
-            self.saveGridButton, alignment=Qt.AlignmentFlag.AlignTop)
-        """self.layout.addWidget(
-            self.commandsButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)"""
+            self.mentalHealthBar, alignment=Qt.AlignmentFlag.AlignTop  | Qt.AlignmentFlag.AlignRight )
+
+    def updateMentalHealth(self,hamsterKilled):
+        self.mentalHealthBar.setValue(100 - (hamsterKilled * 20))
 
     def drawButtons2(self):
         self.zoomInButton = QPushButton("+")
@@ -198,11 +194,7 @@ class Window(QMainWindow):
         self.zoomOutButton.clicked.connect(self.gridController.zoomOut)
         MainWindowController.getInstance().onZoomIn()
         MainWindowController.getInstance().onZoomOut()
-        self.layout.addWidget(
-            self.zoomInButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
-        self.layout.addWidget(
-            self.zoomOutButton, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight)
-        self.layout.addStretch()
+
 
     def closeEvent(self, event):
         self.pauseTimer()
