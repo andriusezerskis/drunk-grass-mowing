@@ -58,19 +58,10 @@ class MainWindowController:
             self.raiseHook()
 
         if tile:
-            if self.mainWindow.docksMonitor.isMonitoringDock() and \
-                    self.mainWindow.docksMonitor.getCurrentDock().monitor.getIsMonitor():
-                self.mainWindow.docksMonitor.getCurrentDock().monitor.offIsMonitor()
-                zone, radius, disaster, entityChosen = self.mainWindow.docksMonitor.getCurrentDock().monitor.getInfo()
-                tiles = self.simulation.bordinatorExecution(zone, radius, disaster, entityChosen, tile.getPos())
-                self.graphicalGrid.updateGrid(tiles)
 
             if not self.simulation.hasPlayer():
-                if not self.mainWindow.docksMonitor.isDisplayed():
-                    self.openDockEvent()
-                self.mainWindow.docksMonitor.getCurrentDock().entityController.setEntity(tile.getEntity())
+
                 self.graphicalGrid.chosenEntity = tile.getEntity()
-                self.mainWindow.docksMonitor.getCurrentDock().entityController.update()
                 self.graphicalGrid.updateHighlighted()
             elif not fish_click:
                 self.playerControll(tile)
@@ -79,7 +70,6 @@ class MainWindowController:
             if not tile.hasEntity() and not self.simulation.hasPlayer():
                 self.graphicalGrid.chosenEntity = None
                 self.graphicalGrid.updateHighlighted()
-                self.mainWindow.docksMonitor.getCurrentDock().entityController.view.deselectEntity()
 
     def mouseReleaseEvent(self, event):
         """End of hook throwing"""
@@ -98,8 +88,7 @@ class MainWindowController:
             print("vous avez pêché " + str(self.simulation.getPlayer().getHookPlace()))
             entity = tile.getEntity()
             self.simulation.player.addInInventory(entity.loot())
-            self.mainWindow.docksMonitor.getCurrentDock().scrollArea.update_content(
-                self.simulation.player.getInventory())
+
             tile.removeEntity()
             entity.kill()
             self.graphicalGrid.redraw(tile)
@@ -115,8 +104,7 @@ class MainWindowController:
         if tile.hasEntity() and tile.getPos() in getPointsAdjacentTo(self.simulation.getPlayer().getPos()):
             entity = tile.getEntity()
             self.simulation.player.addInInventory(entity.loot())
-            self.mainWindow.docksMonitor.getCurrentDock().scrollArea.update_content(
-                self.simulation.player.getInventory())
+
             tile.removeEntity()
             entity.kill()
             self.graphicalGrid.redraw(tile)
@@ -130,33 +118,19 @@ class MainWindowController:
         if not self.simulation.getPlayer().abilityUnlockedRod and self.simulation.getPlayer().hasEnoughQuantityToCraft(FishingRod):
             self.simulation.getPlayer().abilityUnlockedRod = True
             self.simulation.getPlayer().removeFromInventory(FishingRod.getBlueprint())
-            self.mainWindow.docksMonitor.getCurrentDock().scrollArea.update_content(
-                self.simulation.player.getInventory())
             return True
         return False
 
-    def closeDock(self):
-        self.mainWindow.docksMonitor.getCurrentDock().close()
 
-    def closeDockEvent(self):
-        self.mainWindow.buttonOpenDock.show()
 
-    def changeDock(self):
-        self.mainWindow.docksMonitor.changeCurrentDock()
 
-    def hide_button(self):
-        self.mainWindow.buttonOpenDock.hide()
 
-    def openDockEvent(self):
-        self.mainWindow.buttonOpenDock.hide()
-        self.mainWindow.docksMonitor.openDock()
+
 
     def onEntityControl(self):
         self.mainWindow.zoomInButton.setStyleSheet(ViewParameters.LOCKED_BUTTON)
         self.mainWindow.zoomOutButton.setStyleSheet(ViewParameters.LOCKED_BUTTON)
         self.mainWindow.changeTileRendererButton.setStyleSheet(ViewParameters.LOCKED_BUTTON)
-        self.mainWindow.docksMonitor.getCurrentDock().scrollArea.update_content(
-            self.simulation.player.getInventory())
 
     def onEntityLage(self):
         self.mainWindow.zoomInButton.setStyleSheet(None)

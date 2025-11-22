@@ -25,7 +25,6 @@ from view.graphicalGrid import GraphicalGrid
 from controller.gridController import GridController
 from controller.mainWindowController import MainWindowController
 
-from view.docksMonitor import DocksMonitor
 
 
 class Window(QMainWindow):
@@ -41,7 +40,6 @@ class Window(QMainWindow):
             self.view, simulation, self)
         self.layout = QHBoxLayout()
         self.drawButtons()
-        self.docksMonitor = DocksMonitor(self.mainWindowController, self)
 
         self.gridController = GridController(
             self.view, simulation, self.renderingMonitor)
@@ -81,12 +79,7 @@ class Window(QMainWindow):
         self.totalTime += 1
         self.simulation.step()
         self.updateGrid()
-        self.docksMonitor.getCurrentDock().addNewStep()
-        for j in getTerminalSubclassesOfClass(Entity):
-            if j is not Player:
-                self.docksMonitor.getCurrentDock().updateContent(j)
-        self.docksMonitor.getCurrentDock().redrawPlot()
-        self.docksMonitor.getCurrentDock().updateController()
+
         self.showTime()
 
     def showTime(self):
@@ -119,7 +112,6 @@ class Window(QMainWindow):
             self.view.changeTileRenderer()
             self.view.chosenEntity = None
             self.view.updateHighlighted()
-            self.docksMonitor.getCurrentDock().entityController.view.deselectEntity()
 
     def saveGrid(self):
         GridExporter.exportToMap(self.getGraphicalGrid().simulation.getGrid())
@@ -169,13 +161,7 @@ class Window(QMainWindow):
         self.reloadConfigButton = QPushButton("Recharger la configuration")
         self.reloadConfigButton.clicked.connect(self.reloadConfigs)
 
-        self.buttonOpenDock = QPushButton("⇨")
-        self.buttonOpenDock.hide()
-        self.buttonOpenDock.clicked.connect(
-            self.mainWindowController.openDockEvent)
 
-        self.layout.addWidget(self.buttonOpenDock,
-                              alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.layout.addStretch()
         self.layout.addWidget(
             self.pauseButton, alignment=Qt.AlignmentFlag.AlignTop)
