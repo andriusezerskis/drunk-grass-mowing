@@ -62,11 +62,11 @@ class Simulation:
         self.updatedEntities = set()
         self.stepCount += 1
         self.getGrid().regionHandler.advanceTime()
-        print("Step " + str(self.stepCount))
         t = time.time()
         self.updateWaterLevel()
 
         for tile in self.grid:
+            self.handleDisaster(tile)
             entity = tile.getEntity()
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
@@ -74,7 +74,20 @@ class Simulation:
             elif not entity:
                 self.spontaneousGeneration(tile)
 
-        print(f"compute time : {time.time() - t}")
+
+    def handleDisaster(self, tile: Tile):
+        if not tile.getDisaster():
+            return
+
+        entity = tile.getEntity()
+        if entity and isinstance(entity, Entity):
+            entity.inflictDamage(tile.getDisaster().getDamagePoints())
+
+        if tile.getDisaster().getStrength() > 0:
+            tile.getDisaster().decreaseStrength()
+            self.addModifiedTiles(tile)
+        else:
+            tile.removeDisaster()
 
     def spontaneousGeneration(self, tile: Tile):
         assert not tile.hasEntity()

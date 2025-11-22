@@ -31,7 +31,7 @@ class Disaster(ABC):
         return self._strength
 
     def decreaseStrength(self):
-        self._strength = max(0., self._strength - 1 / self.getDuration())
+        self._strength = max(0., self._strength - 1 / (self.getDuration() /3))
 
     def getDamagePoints(self):
         return self.getStrength() * self.getMaxDamage()

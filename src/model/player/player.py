@@ -60,10 +60,7 @@ class Player(Movable):
             oldPosition = copy(self.pos)
             wantedPosition = self.pos + movement
             if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
-                print("lala", self.grid.getTile(wantedPosition).hasEntity())
-                print("lala3", isinstance(self.grid.getTile(wantedPosition).getEntity, Hamster))
                 if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
-                    print("BLODODD")
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
 

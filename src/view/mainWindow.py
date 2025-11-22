@@ -136,7 +136,6 @@ class Window(QMainWindow):
 
     def saveGrid(self):
         GridExporter.exportToMap(self.getGraphicalGrid().simulation.getGrid())
-        print("Saved grid !")
 
     def getGraphicalGrid(self):
         return self.view
@@ -147,7 +146,6 @@ class Window(QMainWindow):
         """
         start = time.time()
         self.view.updateGrid(self.simulation.getUpdatedTiles())
-        print(f"update time : {time.time() - start}")
 
     def commandsCallback(self):
         self.commands.show()
@@ -156,7 +154,6 @@ class Window(QMainWindow):
     def reloadConfigs():
         GenericParameters.reloadAllDicts()
         ParametrizedDrawable.reloadAllDicts()
-        print("Configuration rechargée !")
 
     def drawButtons(self):
         self.pauseButton = QPushButton("⏸︎")

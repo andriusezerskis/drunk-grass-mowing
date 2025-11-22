@@ -82,7 +82,6 @@ class GraphicalGrid(QGraphicsView):
         self.initHighlightedTile()
 
         exec_time = time.time() - start_time
-        print(f"drawn in: {exec_time}s")
         self.min_border = min(self.gridSize.x(), self.gridSize.y())
         self.max_border = max(self.gridSize.x(), self.gridSize.y())
         self.scene_size = 1000  # todo find value, je comprends pas

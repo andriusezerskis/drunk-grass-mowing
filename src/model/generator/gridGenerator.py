@@ -140,7 +140,6 @@ class GridGenerator(AutomaticGenerator):
         islands = []
         sizeOk = False
         start = time.time()
-        print("Generating terrain...")
         if self.landOnly:
             self.matrix = [
                 [Land(Point(x, y), Land.getLevel()) for x in range(self.gridSize.x())]
@@ -150,7 +149,6 @@ class GridGenerator(AutomaticGenerator):
             islands = [all_tiles]
             grid = Grid(self.gridSize)
             grid.initialize(self.matrix, islands)
-            print("Terrain (land only) generated in", time.time() - start, "s")
             return grid
         while len(islands) not in self.islandNb or not sizeOk:
             self.noiseGenerator = NoiseGenerator()
@@ -168,6 +166,5 @@ class GridGenerator(AutomaticGenerator):
 
         grid = Grid(self.gridSize)
         grid.initialize(self.matrix, islands)
-        
-        print("Terrain generated in ", time.time() - start, "s")
+
         return grid
