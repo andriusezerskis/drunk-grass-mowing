@@ -75,7 +75,7 @@ class GraphicalGrid(QGraphicsView):
                     if i != self.tileRendererIdx:
                         self.pixmapItems[y][x][i].hide()
 
-        self.initNightMode()
+        #self.initNightMode()
 
         start_time = time.time()
         self.drawGrid(grid)
@@ -145,10 +145,10 @@ class GraphicalGrid(QGraphicsView):
     def isDefaultTileRenderer(self):
         return self.tileRendererIdx == 0
 
+    """
     def initNightMode(self):
-        """
+        
         Initialize a pixmap with the night mode
-        """
         self.luminosityMode = QGraphicsPixmapItem(
             PixmapUtils.getPixmapFromRGBHex(ViewParameters.NIGHT_MODE_COLOR))
         self.scene.addItem(self.luminosityMode)
@@ -163,6 +163,7 @@ class GraphicalGrid(QGraphicsView):
                         scale * self.gridSize.y())
         self.luminosityMode.setTransform(transform)
         self.luminosityMode.setOpacity(0.7)
+        """
 
     def updateGrid(self, updatedTiles: Set[Tile]):
         if self.getCurrentTileRenderer().mustNotBeUpdated():
@@ -202,7 +203,7 @@ class GraphicalGrid(QGraphicsView):
     def removeEntity(self, point: Point):
         assert isinstance(point, Point)
         self.getPixmapItem(point).hideEntity()
-
+    """
     def nightMode(self, hour: int):
         opacity = self.luminosityMode.opacity()
         if hour == ViewParameters.SUNSET_MODE_START:
@@ -219,7 +220,7 @@ class GraphicalGrid(QGraphicsView):
             self.luminosityMode.setOpacity(opacity + 0.1)
         elif ViewParameters.MIDDLE_OF_THE_NIGHT + 2 < hour < ViewParameters.NIGHT_MODE_FINISH:
             self.luminosityMode.setOpacity(opacity - 0.1)
-
+    """
     def movePlayer(self, oldPos: Point, newPos: Point):
         self.getPixmapItem(oldPos).hideEntity()
         self.redraw(self.simulation.getGrid().getTile(newPos))

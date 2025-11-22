@@ -117,7 +117,7 @@ class Window(QMainWindow):
             self.timebutton.setText(f"Jour {nb_days} - 0{hour}h")
         else:
             self.timebutton.setText(f"Jour {nb_days} - {hour}h")
-        self.view.nightMode(int(hour))
+        #self.view.nightMode(int(hour))
 
     def fastForward(self):
         if self.fastF:
