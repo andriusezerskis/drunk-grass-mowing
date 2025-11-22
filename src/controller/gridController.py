@@ -8,7 +8,6 @@ from typing import Tuple
 from PyQt6.QtCore import *
 from utils import Point
 
-from controller.mainWindowController import MainWindowController
 
 
 class GridController:
@@ -113,7 +112,6 @@ class GridController:
             self.renderingMonitor.multiplyZoomFactor(scaler)
             self.graphicalGrid.scale(scaler, scaler)
 
-            MainWindowController.getInstance().onZoomIn()
             self.recomputeCuboid()
 
     def recomputeCuboid(self):
@@ -146,5 +144,4 @@ class GridController:
             self.graphicalGrid.scale(scaler, scaler)
             self.renderingMonitor.zoomIndex -= 1
 
-            MainWindowController.getInstance().onZoomOut()
             self.recomputeCuboid()

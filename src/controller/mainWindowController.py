@@ -14,6 +14,9 @@ from parameters import ViewParameters
 
 from model.terrains.tiles import Water
 
+from controller.gridController import GridController
+from controller.entityInfoController import EntityInfoController
+
 
 class MainWindowController:
     """Singleton"""
@@ -25,6 +28,7 @@ class MainWindowController:
             cls.graphicalGrid = graphicalGrid
             cls.mainWindow = mainWindow
             cls.simulation = simulation
+            cls.entityController = EntityInfoController()
             # cls.gridController = GridController.getInstance()
         return cls.instance
 
@@ -60,8 +64,11 @@ class MainWindowController:
         if tile:
 
             if not self.simulation.hasPlayer():
-
+                self.entityController.setEntity(tile.getEntity())
                 self.graphicalGrid.chosenEntity = tile.getEntity()
+                GridController.getInstance().controlEntity(tile)
+
+                self.entityController.update()
                 self.graphicalGrid.updateHighlighted()
             elif not fish_click:
                 self.playerControll(tile)
