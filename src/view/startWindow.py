@@ -36,50 +36,23 @@ class StartWindow(QMainWindow):
         # ---- input windows size ----
         self.gridSizeWidth = 80
         self.gridSizeHeight = 80
-        label2 = QToolButton()
-        label2.setText("Taille de la grille")
-        label2.setObjectName("semiTransparent")
-        label2.setFixedSize(200, 30)
-        self.layout2.addStretch()
-        self.layout2.addWidget(label2, alignment=Qt.AlignmentFlag.AlignCenter)
-        self.spinBoxWidth = QSpinBox(minimum=50, maximum=200, value=20)
-        self.spinBoxWidth.setFixedSize(50, 30)
-        self.spinBoxWidth.valueChanged.connect(self.updateSpinboxWidth)
-        self.spinBoxWidth.setObjectName("semiTransparent")
 
-        self.spinBoxHeight = QSpinBox(minimum=50, maximum=200, value=20)
-        self.spinBoxHeight.valueChanged.connect(self.updateSpinboxHeight)
-        self.spinBoxHeight.setFixedSize(50, 30)
-        self.spinBoxHeight.setObjectName("semiTransparent")
 
-        self.layout2.addWidget(
-            self.spinBoxWidth, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.layout2.addWidget(
-            self.spinBoxHeight, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.layout2.addStretch()
 
-        self.loadButton = QToolButton()
-        self.loadButton.setText("Charger une carte")
-        self.loadButton.clicked.connect(self.loadButtonCallback)
-        self.loadButton.setFixedSize(200, 30)
-        self.loadButton.setObjectName("semiTransparent")
 
-        # --- Hlayout  ---
         container2 = QWidget()
         container2.setLayout(self.layout2)
         container2.setObjectName("Transparent")
         self.layout.addWidget(container2)
-        self.layout.addWidget(
-            self.loadButton, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # ---- ok button ----
+
         self.button = QToolButton()
         self.button.setText("Démarrer")
         self.button.setFixedSize(200, 50)
         self.button.clicked.connect(self.initMainWindow)
         self.button.setObjectName("startButton")
         self.layout.addWidget(
-            self.button, alignment=Qt.AlignmentFlag.AlignCenter)
+            self.button, alignment=Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignBottom)
 
     def loadButtonCallback(self):
         """

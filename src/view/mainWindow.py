@@ -194,8 +194,49 @@ class Window(QMainWindow):
         self.layout.addWidget(
             self.mentalHealthBar, alignment=Qt.AlignmentFlag.AlignTop  | Qt.AlignmentFlag.AlignRight )
 
+    def update_health(self, health):
+        """Updates the health bar and changes color based on health."""
+        self.setValue(health)
+
+        
+
     def updateMentalHealth(self,hamsterKilled):
-        self.mentalHealthBar.setValue(100 - (hamsterKilled * 20))
+        mentalhealth = 100 - (hamsterKilled * 20)
+        self.mentalHealthBar.setValue(mentalhealth)
+        if mentalhealth > 60:
+            self.mentalHealthBar.setStyleSheet("""
+                QProgressBar {
+                    border: 1px solid black;
+                    text-align: center;
+                    color: white;
+                }
+                QProgressBar::chunk {
+                    background-color: green;
+                }
+            """)
+        elif mentalhealth > 30:
+            self.mentalHealthBar.setStyleSheet("""
+                QProgressBar {
+                    border: 1px solid black;
+                    text-align: center;
+                    color: white;
+                }
+                QProgressBar::chunk {
+                    background-color: orange;
+                }
+            """)
+        else:
+            self.mentalHealthBar.setStyleSheet("""
+                QProgressBar {
+                    border: 1px solid black;
+                    text-align: center;
+                    color: white;
+                }
+                QProgressBar::chunk {
+                    background-color: red;
+                }
+            """)
+
 
     def drawButtons2(self):
         self.zoomInButton = QPushButton("+")
