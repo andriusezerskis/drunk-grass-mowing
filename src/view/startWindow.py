@@ -110,7 +110,7 @@ class StartWindow(QMainWindow):
     def initMainWindow(self):
         if not self.file or not self.file[0].endswith(".map"):
             self.grid = GridGenerator(Point(self.gridSizeWidth, self.gridSizeHeight), [
-                                      2, 3, 4, 5, 6], 350).generateGrid()
+                                      2, 3, 4, 5, 6], 350, True).generateGrid()
             EntitiesGenerator().generateEntities(self.grid)
         else:
             self.grid = GridLoader.loadFromFile(self.file[0])

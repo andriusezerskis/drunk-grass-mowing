@@ -16,7 +16,7 @@ from overrides import override
 
 # again, this import seems useless but is not
 import model.terrains.tiles
-from model.terrains.tiles import Water
+from model.terrains.tiles import Water, Land
 
 from utils import Point
 
@@ -26,7 +26,7 @@ class GridGenerator(AutomaticGenerator):
     _thresholds: list[tuple[Type[Tile], float]] = []
     _ranges: dict[Type[Tile]: tuple[float, float]] = {}
 
-    def __init__(self, gridSize: Point, islandNb: list[int], islandSize: int):
+    def __init__(self, gridSize: Point, islandNb: list[int], islandSize: int, landOnly: bool):
         """
         :param gridSize: x: width of the map, y: height of the map
         :param islandNb: number of islands in the grid (an array of possible values)
@@ -37,6 +37,7 @@ class GridGenerator(AutomaticGenerator):
         self.matrix = None
         self.islandNb = islandNb
         self.islandSize = islandSize
+        self.landOnly = True
         self.generateThresholds()
         self.maxAbsHeight = 0
 
@@ -140,6 +141,17 @@ class GridGenerator(AutomaticGenerator):
         sizeOk = False
         start = time.time()
         print("Generating terrain...")
+        if self.landOnly:
+            self.matrix = [
+                [Land(Point(x, y), Land.getLevel()) for x in range(self.gridSize.x())]
+                for y in range(self.gridSize.y())
+            ]
+            all_tiles = {tile for row in self.matrix for tile in row}
+            islands = [all_tiles]
+            grid = Grid(self.gridSize)
+            grid.initialize(self.matrix, islands)
+            print("Terrain (land only) generated in", time.time() - start, "s")
+            return grid
         while len(islands) not in self.islandNb or not sizeOk:
             self.noiseGenerator = NoiseGenerator()
             self.noiseGenerator.addNoise(2, 1)

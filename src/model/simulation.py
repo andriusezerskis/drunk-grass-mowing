@@ -55,7 +55,7 @@ class Simulation:
     def generateGrid(gridSize):
         grid = GridGenerator(gridSize,
                              [2, 3, 4, 5, 6],
-                             350).generateGrid()
+                             350, landOnly=True).generateGrid()
         EntitiesGenerator().generateEntities(grid)
         return grid
 
