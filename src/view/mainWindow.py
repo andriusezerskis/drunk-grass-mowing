@@ -80,7 +80,7 @@ class Window(QMainWindow):
         self.music.setSource(QUrl.fromLocalFile("sound_effects/music.wav"))
         self.music.setLoops(-1)
         self.music.setAudioOutput(self.audioOutput)
-        self.audioOutput.setVolume(0)
+        self.audioOutput.setVolume(0.1)
         self.music.play()
        
         self.verticalLayout.addWidget(self.animationLabel, alignment=Qt.AlignmentFlag.AlignCenter)
