@@ -2,13 +2,9 @@
 	"Human": {
 		"view_distance": 2,
 		"texture_path": [
-			"humans/andrius.png",
-			"humans/hawen.png",
-			"humans/loïc.png",
-			"humans/mathieu2.png",
-			"humans/moïra.png"
+			"humans/andrius.png"
 		],
-		"icon_texture_path": "humans/mathieu2.png",
+		"icon_texture_path": "humans/andrius.png",
 		"valid_tiles": ["Land"],
 		"color": "#E6CF6C",
 		"french_name": "Humain",

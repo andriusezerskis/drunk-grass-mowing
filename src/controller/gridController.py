@@ -43,7 +43,7 @@ class GridController:
                 self.movePlayer(Point(1, 0))
 
     def movePlayer(self, movement):
-        if self.simulation.hasPlayer() and not self.simulation.player.isFishing():
+        if self.simulation.hasPlayer():
             pos = self.simulation.getPlayer().getPos()
             if self.simulation.getPlayer().move(movement):
                 self.graphicalGrid.movePlayer(
@@ -66,8 +66,6 @@ class GridController:
             self.recomputeCuboid()
 
     def lageEntity(self, killed=False):
-        if self.simulation.getPlayer().isFishing():
-            self.graphicalGrid.removeHook()
         player_pos = self.simulation.getPlayer().getPos()
         self.simulation.getPlayer().removeClaimedEntity(killed)
         self.graphicalGrid.chosenEntity = self.simulation.getGrid().getTile(player_pos).getEntity() if not killed else None

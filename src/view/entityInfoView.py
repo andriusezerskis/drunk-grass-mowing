@@ -35,14 +35,6 @@ class EntityInfoView:
         if self.entity is not None:
             self.__updateText(self.entity)
 
-
-    def deselectEntity(self):
-        self._hideSelectedEntityPart(ViewText.ENTITY_NOT_SELECTED)
-
     def showDeadEntity(self):
         """When the entity dies, the progress bar shows that the entity is dead"""
         self._hideSelectedEntityPart(ViewText.ENTITY_DEAD_MESSAGE)
-
-    def _hideSelectedEntityPart(self, text):
-        """Hides all the information about the entity"""
-        self.entity = None

@@ -31,8 +31,6 @@ class Craft(ParametrizedDrawable):
         return itemType.__name__ in cls.getBlueprint()
 
 
-class FishingRod(Craft):
-    ...
 
 
 class Fence(Craft):

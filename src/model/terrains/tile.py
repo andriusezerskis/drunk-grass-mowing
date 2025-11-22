@@ -13,7 +13,6 @@ from overrides import override
 from model.entities.entity import Entity
 from model.drawable import ParametrizedDrawable
 from model.movable import Movable
-from model.disasters.disaster import Disaster
 
 from utils import Point
 
@@ -27,8 +26,6 @@ class Tile(ParametrizedDrawable, ABC):
         self.pos = pos
         self.height = height
         self.movable: Movable | None = None
-        self.disaster: Disaster | None = None
-        self.temperature = 0
 
     @classmethod
     @override
@@ -44,11 +41,6 @@ class Tile(ParametrizedDrawable, ABC):
     def getLevel(cls) -> float:
         return cls._getParameter("level")
 
-    def updateTemperature(self, temperature: float):
-        self.temperature = temperature
-
-    def getTemperature(self) -> float:
-        return self.temperature
 
     @classmethod
     def getFilterColor(cls) -> str:
@@ -83,14 +75,6 @@ class Tile(ParametrizedDrawable, ABC):
             return True
         return False
 
-    def getDisaster(self) -> Disaster:
-        return self.disaster
-
-    def setDisaster(self, disaster: Disaster) -> None:
-        self.disaster = disaster
-
-    def removeDisaster(self) -> None:
-        self.disaster = None
 
     def addNewEntity(self, entity: Type[Entity], age: int = 0) -> None:
         """
@@ -121,7 +105,6 @@ class Tile(ParametrizedDrawable, ABC):
         """
         tile = type_(toCopy.pos, toCopy.height)
         tile.setEntity(toCopy.getEntity())
-        tile.setDisaster(toCopy.getDisaster())
         return tile
 
     def __repr__(self):

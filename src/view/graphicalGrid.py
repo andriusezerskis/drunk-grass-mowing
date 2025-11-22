@@ -24,7 +24,6 @@ from model.renderMonitor import RenderMonitor
 from controller.mainWindowController import MainWindowController
 
 from view.tilerenderers.classictilerenderer import ClassicTileRenderer
-from view.tilerenderers.temperaturetilerenderer import TemperatureTileRenderer
 from view.tilerenderers.depthtilerenderer import DepthTileRenderer
 from view.tilerenderers.tilerenderer import TileRenderer
 from view.tilerenderers.unfilteredterraintilerenderer import UnfilteredTerrainTileRenderer
@@ -44,8 +43,7 @@ class Movement(Enum):
 
 
 class GraphicalGrid(QGraphicsView):
-    tileRenderers = [ClassicTileRenderer,
-                     TemperatureTileRenderer, DepthTileRenderer, UnfilteredTerrainTileRenderer]
+    tileRenderers = [ClassicTileRenderer,DepthTileRenderer, UnfilteredTerrainTileRenderer]
 
     def __init__(self, gridSize: Point, grid: Grid, simulation: Simulation, renderingMonitor: RenderMonitor):
 
@@ -82,7 +80,6 @@ class GraphicalGrid(QGraphicsView):
         start_time = time.time()
         self.drawGrid(grid)
         self.initHighlightedTile()
-        self.initHook()
 
         exec_time = time.time() - start_time
         print(f"drawn in: {exec_time}s")
@@ -245,8 +242,6 @@ class GraphicalGrid(QGraphicsView):
         if event.button() == Qt.MouseButton.LeftButton:
             MainWindowController.getInstance().mousePressEvent(event)
 
-    def mouseReleaseEvent(self, event):
-        MainWindowController.getInstance().mouseReleaseEvent(event)
 
     def getVerticalScrollBar(self):
         return self.verticalScrollbar
@@ -335,56 +330,4 @@ class GraphicalGrid(QGraphicsView):
         self.horizontalScrollbar.setValue(point.x() * tileSize)
         self.verticalScrollbar.setValue(point.y() * tileSize)
 
-    def initHook(self):
-        hookThrowing = QPixmap(ViewParameters.FISHING_ROD_TEXTURE_PATH)
-        hookThrowing = hookThrowing.scaled(
-            ViewParameters.TEXTURE_SIZE, ViewParameters.TEXTURE_SIZE)
-        hook = QPixmap(ViewParameters.HOOK_TEXTURE_PATH)
-        hook = hook.scaled(ViewParameters.TEXTURE_SIZE,
-                           ViewParameters.TEXTURE_SIZE)
-        fishingRod = QPixmap(ViewParameters.FISHING_ROD_IN_USE_TEXTURE_PATH)
-        fishingRod = fishingRod.scaled(
-            ViewParameters.TEXTURE_SIZE, ViewParameters.TEXTURE_SIZE)
-        self.hookedTile = QGraphicsPixmapItem(hook)
-        self.hookingPlayer = QGraphicsPixmapItem(fishingRod)
-        self.hookThrowing = QGraphicsPixmapItem(hookThrowing)
-        self.scene.addItem(self.hookedTile)
-        self.scene.addItem(self.hookingPlayer)
-        self.scene.addItem(self.hookThrowing)
-        self.hookedTile.hide()
-        self.hookingPlayer.hide()
-        self.hookThrowing.hide()
 
-    def startHooking(self):
-        pos = self.simulation.getPlayer().getPos()
-        self.hookThrowing.setPos(
-            pos.x() * self.textureSize, pos.y() * self.textureSize)
-        self.hookThrowing.show()
-
-    def stopHooking(self):
-        self.hookThrowing.hide()
-
-    def drawHook(self, point: Point):
-        self.stopHooking()
-        pos = self.simulation.getPlayer().getPos()
-        self.hookedTile.setPos(point.x() * self.textureSize,
-                               point.y() * self.textureSize)
-        self.hookingPlayer.setPos(
-            pos.x() * self.textureSize, pos.y() * self.textureSize)
-
-        pen = QPen(QColor(255, 255, 255))
-        pen.setWidth(50)
-        line = QLineF(int(point.x() * self.textureSize + self.textureSize/2), int(point.y() * self.textureSize + self.textureSize/2),
-                      int(pos.x() * self.textureSize + self.textureSize/2), int(pos.y() * self.textureSize) + self.textureSize/2)
-        self.line = QGraphicsLineItem(line)
-        self.line.setPen(pen)
-        self.scene.addItem(self.line)
-        self.hookedTile.show()
-        self.hookingPlayer.show()
-        self.line.show()
-
-    def removeHook(self):
-        self.hookedTile.hide()
-        self.hookingPlayer.hide()
-        self.stopHooking()
-        self.scene.removeItem(self.line)
