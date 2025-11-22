@@ -12,7 +12,7 @@
 		"ascending_gradient": 0
 	},
 	"Land": {
-		"texture_path": ["land/land6.png"],
+		"texture_path": ["land/land_unmowed.png"],
 		"level": 0.75,
 		"filter_color": "#015705",
 		"ascending_gradient": 1
@@ -21,6 +21,12 @@
 		"texture_path": ["mountain3.png"],
 		"level": 1,
 		"filter_color": "#F2C5B3",
+		"ascending_gradient": 1
+	},
+	"MowedGrass": {
+		"texture_path": ["land/land_mowed.png"],
+		"level": 0.75,
+		"filter_color": "#004d00",
 		"ascending_gradient": 1
 	}
 }

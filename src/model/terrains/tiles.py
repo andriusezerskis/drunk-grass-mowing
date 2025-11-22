@@ -21,3 +21,7 @@ class Sand(Tile):
 
 class Water(Tile):
     ...
+
+class MowedGrass(Tile):
+    ...
+    

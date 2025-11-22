@@ -26,7 +26,7 @@ from model.grid import Grid
 from model.generator.gridGenerator import GridGenerator
 from model.generator.entitiesGenerator import EntitiesGenerator
 from model.terrains.tile import Tile
-from model.terrains.tiles import Water
+from model.terrains.tiles import MowedGrass, Water, Land
 from model.entities.entity import Entity
 from model.player.player import Player
 from model.renderMonitor import RenderMonitor
@@ -60,17 +60,26 @@ class Simulation:
     def step(self) -> None:
         self.modifiedTiles = set()
         self.updatedEntities = set()
+
+        self.mowed = set() # new set
+
         self.stepCount += 1
         self.getGrid().regionHandler.advanceTime()
         t = time.time()
         self.updateWaterLevel()
+        self.mowLand()
 
+        print("player position: ", self.player.pos)
+        
         for tile in self.grid:
             self.handleDisaster(tile)
             entity = tile.getEntity()
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
                 self.updatedEntities.add(entity)
+            elif entity and isinstance(entity, Player) and type(tile) is Land:
+                self.mowed.add(tile)
+                self.addModifiedTiles(tile)
             elif not entity:
                 self.spontaneousGeneration(tile)
 
@@ -121,6 +130,10 @@ class Simulation:
                             TerrainParameters.DAY_DURATION) + 1)
                            * (TerrainParameters.MAX_WATER_LEVEL - Water.getLevel()) / 2)
         modified = self.grid.updateTilesWithWaterLevel(self.waterLevel)
+        self.modifiedTiles |= modified
+
+    def mowLand(self) -> None:
+        modified = self.grid.updateMowedGrassTiles(self.mowed, MowedGrass)
         self.modifiedTiles |= modified
 
     def evolution(self, entity: Entity) -> None:
