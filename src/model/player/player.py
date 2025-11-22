@@ -75,9 +75,6 @@ class Player(Movable):
                     self.sound.setVolume(0.5)
                     self.sound.play()
 
-                    
-
-
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()
                     self.grid.getTile(wantedPosition).setEntity(self)
