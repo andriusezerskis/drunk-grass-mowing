@@ -17,6 +17,10 @@ class Land(Tile):
     @classmethod
     def get_initial_time_to_regrow(cls) -> int:
         return cls._getParameter("time_to_regrow")
+    
+    @classmethod
+    def getReward(cls) -> int:
+        return cls._getParameter("reward")
 
     def get_time_to_regrow(self) -> int:
         return self.time_to_regrow
@@ -37,6 +41,8 @@ class Land(Tile):
     
     def _get_previous_type(self):
         return self.variations[(self.no_times_mowed) % len(self.variations)]
+    
+
 
 
 class Mountain(Tile):

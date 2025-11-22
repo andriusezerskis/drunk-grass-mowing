@@ -16,7 +16,8 @@
 		"level": 0.75,
 		"filter_color": "#015705",
 		"ascending_gradient": 1,
-		"time_to_regrow": 0
+		"time_to_regrow": 0,
+		"reward": 0
 	},
 	"Mountain": {
 		"texture_path": ["mountain3.png"],
@@ -29,27 +30,31 @@
 		"level": 0.65,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 15
+		"time_to_regrow": 15,
+		"reward": 20
 	},
 	"MowedGrass2": {
 		"texture_path": ["land/land_mowed2.png"],
 		"level": 0.66,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 20
+		"time_to_regrow": 20,
+		"reward": 7.5
 	},
 	"MowedGrass3": {
 		"texture_path": ["land/land_mowed3.png"],
 		"level": 0.67,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 25
+		"time_to_regrow": 25,
+		"reward": 1
 	},
 	"MowedGrass4": {
 		"texture_path": ["land/land_mowed4.png"],
 		"level": 0.69,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 50
+		"time_to_regrow": 100,
+		"reward": -5
 	}
 }

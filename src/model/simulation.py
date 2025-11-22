@@ -44,9 +44,9 @@ class Simulation:
         self.mowed: set[Tile] = set()
         self.player = Player(None, self.grid)
         self.renderMonitor = RenderMonitor(gridSize, gridSize)
-
+        
         self.waterLevel = Water.getLevel()
-
+        
         Entity.setGrid(self.grid)
 
     @staticmethod
@@ -67,7 +67,7 @@ class Simulation:
         self.updateWaterLevel()
         
         print("player position: ", self.player.pos)
-        
+
         for tile in self.grid:
             self.handleDisaster(tile)
             entity = tile.getEntity()
@@ -78,7 +78,6 @@ class Simulation:
             if timeToRegrow == 0 and type(tile) is not Land:
                 # newTile = Tile.copyWithDifferentTypeOf(tile, Land)
                 newTileType = tile.regrow()
-                print("regrowing to type: ", newTileType)
                 newTile = Tile.copyWithDifferentTypeOf(tile, newTileType)
                 self.modifiedTiles.add(newTile)
             else:
@@ -91,26 +90,29 @@ class Simulation:
                 self.spontaneousGeneration(tile)
 
         # handle mowed tiles
-        for tile in self.player.visitedTiles:
-            if type(tile) is Land:
-                self.mowed.add(tile)
+        # for tile in self.player.visitedTiles:
+        #     if type(tile) is Land:
+        #         self.mowed.add(tile)
 
-                self.addModifiedTiles(tile)
-                self.player.finance.addCurr(1)
-                newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
-                self.modifiedTiles.add(newTile)
-        self.mowed = set()
+        #         self.addModifiedTiles(tile)
+        #         self.player.finance.addCurr(1)
+        #         newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
+        #         self.modifiedTiles.add(newTile)
+        # self.mowed = set()
 
         print("mowed: ", self.mowed)
         print(f"compute time : {time.time() - t}")
-        if (random() < self.player.drunk):
+        if (random() < self.player.alcoholismLevel / 100):
             if (random() > 0.5):
                 GridController.getInstance().zoomOut()
             else:
                 GridController.getInstance().zoomIn()
-            GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos()) 
+            GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos())
+            
         
-
+        # decrease alcoholism level over time
+        if self.player.alcoholismLevel > 0:
+            self.player.alcoholismLevel *= 0.9
 
     def handleDisaster(self, tile: Tile):
         if not tile.getDisaster():

@@ -39,7 +39,8 @@ class Player(Movable):
         self.visitedTiles: list[Tile] = []
         self.finance = Finance()
         self.hamstersKilled = 0
-        self.drunk = 0
+        self.rewardGained = 0
+        self.alcoholismLevel = 0 # percentage
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -75,7 +76,6 @@ class Player(Movable):
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
                     self.hamstersKilled += 1
-                    self.drunk += 10
                     self.sound = QSoundEffect()
                     self.chainsawSound = QSoundEffect()
                     self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
@@ -85,6 +85,9 @@ class Player(Movable):
                     self.chainsawSound.setVolume(0.5)
                     self.sound.play()
                     self.chainsawSound.play()
+                    print("Hamsters killed: ", self.hamstersKilled)
+                    self.updateAlcoholismLevel()
+                    print("Current alcoholism level: ", self.alcoholismLevel)
 
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()
@@ -94,17 +97,29 @@ class Player(Movable):
                     # mark tile as mowedgrass
                     currentTile = self.grid.getTile(wantedPosition)
                     nextTileType = currentTile.mow()
-                    print("Current tile type: ", type(currentTile))
-                    print("Mowed grass to type: ", nextTileType)
+                    self.rewardGained += nextTileType.getReward()
+                    print("Current reward: ", self.rewardGained)
 
                     newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
                     currentTile.setEntity(self)
                     newTile.no_times_mowed = currentTile.no_times_mowed
-                    print("new tile type: ", type(newTile))
                     self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
 
                 return True
             return False
+        
+    def updateAlcoholismLevel(self):
+        if self.hamstersKilled == 1:
+            self.alcoholismLevel += 10
+        elif self.hamstersKilled >= 2 and self.hamstersKilled < 5:
+            self.alcoholismLevel *= 1.5
+        elif self.hamstersKilled >= 5 and self.hamstersKilled < 10:
+            self.alcoholismLevel *= 1.2
+        elif self.hamstersKilled >= 10:
+            self.alcoholismLevel *= 1.1
+        elif self.hamstersKilled == 25:
+            self.alcoholismLevel = 50
+        self.alcoholismLevel = min(100, self.alcoholismLevel)
 
     def addInInventory(self, loots: Dict[str, int]):
         for loot_name in loots:
