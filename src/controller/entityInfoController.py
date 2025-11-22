@@ -9,8 +9,8 @@ from view.entityInfoView import EntityInfoView
 
 
 class EntityInfoController:
-    def __init__(self, container: QWidget):
-        self.view = EntityInfoView(container)
+    def __init__(self):
+        self.view = EntityInfoView()
 
     def update(self):
         self.view.updateOnStep()
