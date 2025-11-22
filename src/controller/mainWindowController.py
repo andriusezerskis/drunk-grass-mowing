@@ -16,6 +16,7 @@ from model.terrains.tiles import Water
 from controller.gridController import GridController
 from controller.entityInfoController import EntityInfoController
 from model.entities.human import Human
+from model.disasters.bloodsplatter import BloodSplatter
 
 
 class MainWindowController:
@@ -39,6 +40,9 @@ class MainWindowController:
             GridController.getInstance().controlEntity(tile)
             cls.entityController.update()
             cls.graphicalGrid.updateHighlighted()
+
+            disasterType = BloodSplatter(1)
+            disasterType.applyDisaster(tile, 1)
 
             cls.graphicalGrid.redraw(tile)
 

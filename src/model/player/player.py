@@ -8,11 +8,14 @@ from copy import copy
 from overrides import override
 from typing import Dict, Type
 from overrides import override
+from model.disasters.bloodsplatter import BloodSplatter
+
 
 from utils import Point, getTerminalSubclassesOfClass
 
 from model.entities.entity import Entity
 from model.entities.animal import Animal
+from model.entities.animals import Hamster
 from model.terrains.tile import Tile
 from model.movable import Movable
 from model.crafting.loots import Loot
@@ -56,9 +59,14 @@ class Player(Movable):
         for i in self.pos:
             oldPosition = copy(self.pos)
             wantedPosition = self.pos + movement
-            if (self.grid.isInGrid(wantedPosition)
-                    and not self.grid.getTile(wantedPosition).hasEntity()
-                    and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
+            if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
+                print("lala", self.grid.getTile(wantedPosition).hasEntity())
+                print("lala3", isinstance(self.grid.getTile(wantedPosition).getEntity, Hamster))
+                if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
+                    print("BLODODD")
+                    disasterType = BloodSplatter(1)
+                    disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
+
                 self.grid.getTile(oldPosition).removeEntity()
                 self.grid.getTile(wantedPosition).setEntity(self)
                 self.pos = wantedPosition

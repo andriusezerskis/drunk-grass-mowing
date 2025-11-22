@@ -102,3 +102,11 @@ class CraftParameters(GenericParameters, ABC):
         return "crafting_parameters.json"
 
 
+class DisasterParameters(GenericParameters, ABC):
+    FIRE_DAMAGE: int = None
+    ICE_DAMAGE: int = None
+
+    @classmethod
+    @override
+    def getFileName(cls) -> str:
+        return "disasters_parameters.json"

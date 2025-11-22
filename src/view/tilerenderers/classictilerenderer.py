@@ -19,6 +19,7 @@ class ClassicTileRenderer(TileRenderer):
         super().__init__(pos)
         self.terrainLayer = self.createNewLayer()
         self.depthLayer = self.createNewLayer()
+        self.disasterLayer = self.createNewLayer()
         self.entityLayer = self.createNewLayer()
 
     def _updateTerrainLayer(self, tile: Tile):
@@ -51,6 +52,11 @@ class ClassicTileRenderer(TileRenderer):
         self.depthLayer.setOpacity(opacity)
         self.depthLayer.show()
 
+    def _updateDisasterLayer(self, tile: Tile):
+        if (tile.getDisaster()):
+            self.disasterLayer.setOpacity(tile.getDisaster().getStrength())
+            self.disasterLayer.setPixmap(
+                PixmapUtils.getPixmapFromPath(tile.getDisaster().getTexturePath()))
 
     @override
     def hideEntity(self):
@@ -58,7 +64,7 @@ class ClassicTileRenderer(TileRenderer):
 
     @override
     def getAllItems(self) -> list[QGraphicsPixmapItem]:
-        return [self.depthLayer, self.entityLayer, self.terrainLayer]
+        return [self.depthLayer, self.disasterLayer, self.entityLayer, self.terrainLayer]
 
     @classmethod
     @override
@@ -80,4 +86,5 @@ class ClassicTileRenderer(TileRenderer):
         self._updateTerrainLayer(tile)
         self._updateDepthLayer(tile)
         self._updateEntityLayer(tile)
+        self._updateDisasterLayer(tile)
 

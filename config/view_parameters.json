@@ -9,7 +9,7 @@
     "TEXTURE_SIZE": 2048,
     "MOON_ICON" : "../assets/textures/effects/moon.png",
     "SUN_ICON" : "../assets/textures/effects/sun.png",
-    "FIRE_TEXTURE_PATH": "../assets/textures/effects/fire.png",
+    "BLOOD_SPLATTER": "../assets/textures/effects/blood.png",
     "HIGHTLIGHTED_TILE_TEXTURE_PATH": "../assets/textures/effects/frame.png",
     "HOOK_TEXTURE_PATH": "../assets/textures/effects/hook.png",
     "FISHING_ROD_IN_USE_TEXTURE_PATH": "../assets/textures/effects/fishing_rod.png",

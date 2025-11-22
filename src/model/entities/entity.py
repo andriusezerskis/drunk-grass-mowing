@@ -9,7 +9,7 @@ from mimesis import Person
 from mimesis import Locale
 from abc import ABC, abstractmethod
 
-from parameters import EntityParameters, TerrainParameters
+from parameters import EntityParameters, TerrainParameters, DisasterParameters
 
 from model.action import Action
 from typing import TypeVar, Type

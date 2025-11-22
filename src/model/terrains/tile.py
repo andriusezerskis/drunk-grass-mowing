@@ -7,6 +7,8 @@ Date: December 2023
 from abc import ABC
 from typing import Type
 
+from model.disasters.disaster import Disaster
+
 from overrides import override
 
 
@@ -26,6 +28,7 @@ class Tile(ParametrizedDrawable, ABC):
         self.pos = pos
         self.height = height
         self.movable: Movable | None = None
+        self.disaster: Disaster | None = None
 
     @classmethod
     @override
@@ -62,6 +65,15 @@ class Tile(ParametrizedDrawable, ABC):
 
     def hasEntity(self) -> bool:
         return self.movable is not None
+
+    def getDisaster(self) -> Disaster:
+        return self.disaster
+
+    def setDisaster(self, disaster: Disaster) -> None:
+        self.disaster = disaster
+
+    def removeDisaster(self) -> None:
+        self.disaster = None
 
     def setEntity(self, entity: Movable) -> bool:
         """
@@ -105,6 +117,8 @@ class Tile(ParametrizedDrawable, ABC):
         """
         tile = type_(toCopy.pos, toCopy.height)
         tile.setEntity(toCopy.getEntity())
+        tile.setDisaster(toCopy.getDisaster())
+
         return tile
 
     def __repr__(self):
