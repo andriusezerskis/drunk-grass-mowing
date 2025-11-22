@@ -63,11 +63,13 @@ class Window(QMainWindow):
         self.animationLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
-        self.movie = QMovie("text.gif")
+        self.movie = QMovie("text_gifs/grass_kill.gif")
         self.animationLabel.setMovie(self.movie)
         self.animationLabel.setScaledContents(True)
         self.animationLabel.resize(300,300)
+        self.animationLabel.setStyleSheet("background: transparent;")
         self.movie.start()
+        self.animationLabel.setHidden(True)
         
         self.verticalLayout.addWidget(self.animationLabel, alignment=Qt.AlignmentFlag.AlignCenter)
 
