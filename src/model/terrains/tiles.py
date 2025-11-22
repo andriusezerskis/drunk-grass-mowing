@@ -25,7 +25,11 @@ class Water(Tile):
 class MowedGrass(Land):
     def __init__(self, pos, height):
         super().__init__(pos, height)
-        self.time_to_regrow = 15 # FIXME get from config file instead of hardcoding
+        self.time_to_regrow = self.get_initial_time_to_regrow()
+
+    @classmethod
+    def get_initial_time_to_regrow(cls) -> int:
+        return cls._getParameter("time_to_regrow")
 
     def get_time_to_regrow(self) -> int:
         return self.time_to_regrow
