@@ -2,9 +2,9 @@
 	"Human": {
 		"view_distance": 2,
 		"texture_path": [
-			"humans/andrius.png"
+			"lawnmower.png"
 		],
-		"icon_texture_path": "humans/andrius.png",
+		"icon_texture_path": "lawnmower.png",
 		"valid_tiles": ["Land"],
 		"color": "#E6CF6C",
 		"french_name": "Humain",
