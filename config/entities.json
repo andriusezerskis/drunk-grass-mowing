@@ -25,7 +25,7 @@
 		"color": "#b3d5a4",
 		"french_name": "Arbre",
 		"valid_tiles": ["Land"],
-		"spawn_weight": 0,
+		"spawn_weight": 0.03,
 		"health_points": 300,
 		"loots": { "Wood": [5, 0.8] },
 		"symbol": "T"
@@ -121,7 +121,7 @@
 		"texture_path": ["hamster.png"],
 		"icon_texture_path": "hamster.png",
 		"french_name": "Hamster",
-		"valid_tiles": ["Land"],
+		"valid_tiles": ["Land", "MowedGrass"],
 		"preys": ["Flower"],
 		"color": "#D2A679",
 		"spawn_weight": 0.01,

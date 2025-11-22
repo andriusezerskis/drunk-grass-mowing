@@ -54,7 +54,6 @@ class Simulation:
         grid = GridGenerator(gridSize,
                              [2, 3, 4, 5, 6],
                              350, landOnly=True).generateGrid()
-        EntitiesGenerator().generateEntities(grid)
         return grid
 
 

@@ -15,6 +15,7 @@ from model.terrains.tiles import MowedGrass
 from utils import Point, getTerminalSubclassesOfClass
 
 from model.entities.entity import Entity
+from model.entities.plants import Tree
 from model.entities.animal import Animal
 from model.entities.animals import Hamster
 from model.terrains.tile import Tile
@@ -65,9 +66,10 @@ class Player(Movable):
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
 
-                self.grid.getTile(oldPosition).removeEntity()
-                self.grid.getTile(wantedPosition).setEntity(self)
-                self.pos = wantedPosition
+                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
+                    self.grid.getTile(oldPosition).removeEntity()
+                    self.grid.getTile(wantedPosition).setEntity(self)
+                    self.pos = wantedPosition
                 # self.visitedTiles.append(self.grid.getTile(wantedPosition))
                 # print("visitedTiles", self.visitedTiles)
                 # if len(self.visitedTiles) > 10:

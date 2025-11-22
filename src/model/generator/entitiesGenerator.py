@@ -8,6 +8,7 @@ import random
 from typing import Type
 
 from parameters import TerrainParameters, EntityParameters
+from utils import Point
 
 from random import random, choices
 
@@ -39,7 +40,7 @@ class EntitiesGenerator(AutomaticGenerator):
 
     def generateEntities(self, grid: Grid):
         for tile in grid:
-            if random() >= TerrainParameters.EMPTY_TILE_PROBABILITY_GENERATION and not tile.getEntity():
+            if random() >= TerrainParameters.EMPTY_TILE_PROBABILITY_GENERATION and not tile.getEntity()and not tile.getPos() == Point(0,0):
                 self.addRandomEntity(tile)
 
 
@@ -64,6 +65,8 @@ class EntitiesGenerator(AutomaticGenerator):
         if len(validEntities) == 0:
             return
         weights = [entityType.getSpawnWeight() for entityType in validEntities]
+
+
 
         return tile.addNewEntity(choices(population=validEntities, weights=weights)[0],
                                  randint(0, EntityParameters.MAX_AGE - 1))

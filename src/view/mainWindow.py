@@ -154,6 +154,7 @@ class Window(QMainWindow):
     def reloadConfigs():
         GenericParameters.reloadAllDicts()
         ParametrizedDrawable.reloadAllDicts()
+        print("Configuration rechargée !")
 
     def drawButtons(self):
         self.pauseButton = QPushButton("⏸︎")
@@ -167,17 +168,12 @@ class Window(QMainWindow):
         self.timebutton = QPushButton("00:00:00")
         self.timebutton.setIcon(QIcon(ViewParameters.MOON_ICON))
 
-        # self.commandsButton = QPushButton("Commands")
-        # self.commandsButton.clicked.connect(self.commandsCallback)
 
         self.changeTileRendererButton = QPushButton("Changer de rendu")
         self.changeTileRendererButton.clicked.connect(self.changeTileRenderer)
 
         self.saveGridButton = QPushButton("Sauvegarder")
         self.saveGridButton.clicked.connect(self.saveGrid)
-
-        self.reloadConfigButton = QPushButton("Recharger la configuration")
-        self.reloadConfigButton.clicked.connect(self.reloadConfigs)
 
 
         self.layout.addStretch()
@@ -189,9 +185,7 @@ class Window(QMainWindow):
             self.timebutton,  alignment=Qt.AlignmentFlag.AlignTop)
         self.layout.addWidget(
             self.changeTileRendererButton, alignment=Qt.AlignmentFlag.AlignTop)
-        self.layout.addWidget(
-            self.reloadConfigButton, alignment=Qt.AlignmentFlag.AlignTop
-        )
+
         self.layout.addWidget(
             self.saveGridButton, alignment=Qt.AlignmentFlag.AlignTop)
         """self.layout.addWidget(
