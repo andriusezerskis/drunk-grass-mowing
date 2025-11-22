@@ -33,6 +33,7 @@ class Player(Movable):
         self.grid = grid
         self.claimed_entity: Entity | None = None
         self.visitedTiles: list[Tile] = []
+        self.hamstersKilled = 0
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -65,6 +66,7 @@ class Player(Movable):
                 if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
                     disasterType = BloodSplatter(1)
                     disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
+                    self.hamstersKilled += 1
 
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()
