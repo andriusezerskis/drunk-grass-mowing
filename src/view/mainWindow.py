@@ -8,7 +8,7 @@ import time
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, QLabel, QVBoxLayout,QProgressBar
 from PyQt6.QtCore import Qt, QTimer, QUrl
 from PyQt6.QtGui import QIcon
-from PyQt6.QtGui import QMovie
+from PyQt6.QtGui import QMovie, QFont
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 
 from parameters import ViewParameters, ViewText
@@ -44,6 +44,8 @@ class Window(QMainWindow):
             self.view, simulation, self)
 
         self.layout = QHBoxLayout()
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.layout.addStretch(0)
         self.drawButtons()
         
 
@@ -111,12 +113,13 @@ class Window(QMainWindow):
         self.simulation.step()
         self.updateGrid()
         self.updateMentalHealth(self.simulation.getPlayer().hamstersKilled)
-        self.showTime()
+        #self.showTime()
 
+    """
     def showTime(self):
-        """
+        
         Display the time passed, one step is one hour
-        """
+        
         nb_days = self.totalTime // 24 + 1
         hour = self.totalTime % 24
         if int(hour) == ViewParameters.NIGHT_MODE_START:
@@ -128,7 +131,8 @@ class Window(QMainWindow):
         else:
             self.timebutton.setText(f"Jour {nb_days} - {hour}h")
         #self.view.nightMode(int(hour))
-
+    """
+    """
     def fastForward(self):
         if self.fastF:
             self.timer.setInterval(ViewParameters.STEP_TIME)
@@ -137,16 +141,16 @@ class Window(QMainWindow):
         else:
             self.timer.setInterval(ViewParameters.STEP_TIME // 2)
             self.fastF = True
-
+    """
     def changeTileRenderer(self):
         if not self.simulation.hasPlayer():
             self.view.changeTileRenderer()
             self.view.chosenEntity = None
             self.view.updateHighlighted()
-
+    """
     def saveGrid(self):
         GridExporter.exportToMap(self.getGraphicalGrid().simulation.getGrid())
-
+    """
     def getGraphicalGrid(self):
         return self.view
 
@@ -167,10 +171,13 @@ class Window(QMainWindow):
         print("Configuration rechargée !")
 
     def drawButtons(self):
+        
         self.pauseButton = QPushButton("⏸︎")
         self.pauseButton.setCheckable(True)
         self.pauseButton.clicked.connect(self.pauseTimer)
+        self.layout.addWidget(self.pauseButton)
 
+        """
         self.fastFbutton = QPushButton("⏩")
         self.fastFbutton.setCheckable(True)
         self.fastFbutton.clicked.connect(self.fastForward)
@@ -184,7 +191,12 @@ class Window(QMainWindow):
 
         self.saveGridButton = QPushButton("Sauvegarder")
         self.saveGridButton.clicked.connect(self.saveGrid)
+        """
 
+        self.currencyLabel = QLabel("0")
+        self.currencyLabel.setFont(QFont("Arial",18))
+        self.currencyLabel.setFixedWidth(200)
+        self.layout.addWidget(self.currencyLabel)
 
         self.mentalHealthBar = QProgressBar()
         self.mentalHealthBar.setRange(0, 100)

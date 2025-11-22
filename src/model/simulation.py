@@ -93,7 +93,9 @@ class Simulation:
         for tile in self.player.visitedTiles:
             if type(tile) is Land:
                 self.mowed.add(tile)
+
                 self.addModifiedTiles(tile)
+                self.player.finance.addCurr(1)
                 newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
                 self.modifiedTiles.add(newTile)
         self.mowed = set()

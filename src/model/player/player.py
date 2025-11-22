@@ -26,7 +26,7 @@ from model.movable import Movable
 from model.crafting.loots import Loot
 
 from utils import getNormalizedVector
-
+from model.player.finance import Finance
 
 class Player(Movable):
 
@@ -36,6 +36,7 @@ class Player(Movable):
         self.grid = grid
         self.claimed_entity: Entity | None = None
         self.visitedTiles: list[Tile] = []
+        self.finance = Finance()
         self.hamstersKilled = 0
         self.drunk = 0
 
