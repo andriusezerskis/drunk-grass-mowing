@@ -27,6 +27,7 @@ from model.crafting.loots import Loot
 
 from utils import getNormalizedVector
 from model.player.finance import Finance
+import random
 
 class Player(Movable):
 
@@ -76,9 +77,14 @@ class Player(Movable):
                     self.hamstersKilled += 1
                     self.drunk += 10
                     self.sound = QSoundEffect()
+                    self.chainsawSound = QSoundEffect()
                     self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
+                    print("sound_effects/chainsaw"+str(random.randint(1, 2))+".wav")
+                    self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1, 2))+".wav"))
                     self.sound.setVolume(0.5)
+                    self.chainsawSound.setVolume(0.5)
                     self.sound.play()
+                    self.chainsawSound.play()
 
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()

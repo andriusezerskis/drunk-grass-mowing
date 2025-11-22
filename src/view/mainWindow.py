@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, 
 from PyQt6.QtCore import Qt, QTimer, QUrl
 from PyQt6.QtGui import QIcon
 from PyQt6.QtGui import QMovie, QFont
-from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
+from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
 
 from parameters import ViewParameters, ViewText
 from utils import Point, getTerminalSubclassesOfClass
@@ -76,11 +76,13 @@ class Window(QMainWindow):
 
         self.music = QMediaPlayer()
         self.audioOutput = QAudioOutput()
-
-        self.music.setSource(QUrl.fromLocalFile("sound_effects/music.wav"))
+        self.startSound = QSoundEffect()
+        self.startSound.setSource(QUrl.fromLocalFile("sound_effects/chainsaw_start_01.wav"))
+        self.startSound.play()
+        self.music.setSource(QUrl.fromLocalFile("sound_effects/chainsaw_idle_lp_01.wav"))
         self.music.setLoops(-1)
         self.music.setAudioOutput(self.audioOutput)
-        self.audioOutput.setVolume(0.1)
+        self.audioOutput.setVolume(0.2)
         self.music.play()
        
         self.verticalLayout.addWidget(self.animationLabel, alignment=Qt.AlignmentFlag.AlignCenter)
