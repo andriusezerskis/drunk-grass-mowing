@@ -16,7 +16,7 @@ from overrides import override
 
 # again, this import seems useless but is not
 import model.terrains.tiles
-from model.terrains.tiles import Water, Land
+from model.terrains.tiles import MowedGrass1, MowedGrass3, MowedGrass4, Water, Land
 
 from utils import Point
 

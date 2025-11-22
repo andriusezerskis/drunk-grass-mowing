@@ -14,7 +14,7 @@ from PyQt6.QtMultimedia import QSoundEffect
 from PyQt6.QtCore import QUrl
 
 
-from model.terrains.tiles import MowedGrass
+from model.terrains.tiles import MowedGrass1, MowedGrass2, MowedGrass4
 from utils import Point, getTerminalSubclassesOfClass
 
 from model.entities.entity import Entity
@@ -64,6 +64,8 @@ class Player(Movable):
         return self.grid.getTile(self.pos)
 
     def move(self, movement: Point):
+        currentTile = self.grid.getTile(self.pos)
+        # print("current tile type", currentTile.get_current_type())
         for i in self.pos:
             oldPosition = copy(self.pos)
             wantedPosition = self.pos + movement
@@ -82,14 +84,19 @@ class Player(Movable):
                     self.grid.getTile(oldPosition).removeEntity()
                     self.grid.getTile(wantedPosition).setEntity(self)
                     self.pos = wantedPosition
-                # self.visitedTiles.append(self.grid.getTile(wantedPosition))
-                # print("visitedTiles", self.visitedTiles)
-                # if len(self.visitedTiles) > 10:
-                #     self.visitedTiles.pop(0)
+                
+                    # mark tile as mowedgrass
+                    currentTile = self.grid.getTile(wantedPosition)
+                    nextTileType = currentTile.mow()
+                    print("Current tile type: ", type(currentTile))
+                    print("Mowed grass to type: ", nextTileType)
 
-                # mark tile as mowedgrass
-                newTile = Tile.copyWithDifferentTypeOf(self.grid.getTile(wantedPosition), MowedGrass)
-                self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
+                    newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
+                    currentTile.setEntity(self)
+                    newTile.no_times_mowed = currentTile.no_times_mowed
+                    print("new tile type: ", type(newTile))
+                    self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
+
                 return True
             return False
 

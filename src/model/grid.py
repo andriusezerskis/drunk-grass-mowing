@@ -91,25 +91,6 @@ class Grid:
             modified.add(newTile)
         return modified
 
-    # def updateMowedGrassTiles(self, mowed: set[Tile], mowedGrassTileType: type[Tile]) -> set[Tile]:
-    #     modified = set()
-    #     for tile in self.tiles:
-    #         for tile_x in tile
-    #         for mowed_tile in mowed:
-    #             if tile.getPos() == mowed_tile.getPos():
-    #                 print("reached")
-    #                 newTile = Tile.copyWithDifferentTypeOf(tile, mowedGrassTileType)
-
-    #                 # if tile.hasEntity() and not newTile.hasEntity():
-    #                 #     tile.getEntity().kill()
-    #                 #     tile.removeEntity()
-
-    #                 self.tiles[tile.getPos().y()][tile.getPos().x()] = newTile
-    #                 modified.add(newTile)
-
-    #     return modified
-
-
     def getTile(self, pos: Point) -> Tile:
         if not self.isInGrid(pos):
             raise IndexError(f"Position {pos} is not in the grid")

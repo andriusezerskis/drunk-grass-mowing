@@ -26,7 +26,7 @@ from model.grid import Grid
 from model.generator.gridGenerator import GridGenerator
 from model.generator.entitiesGenerator import EntitiesGenerator
 from model.terrains.tile import Tile
-from model.terrains.tiles import MowedGrass, Water, Land
+from model.terrains.tiles import MowedGrass1, Water, Land, MowedGrass2, MowedGrass3, MowedGrass4
 from model.entities.entity import Entity
 from model.player.player import Player
 from model.renderMonitor import RenderMonitor
@@ -65,23 +65,24 @@ class Simulation:
         self.getGrid().regionHandler.advanceTime()
         t = time.time()
         self.updateWaterLevel()
-        self.mowLand()
-
+        
         print("player position: ", self.player.pos)
         
         for tile in self.grid:
             self.handleDisaster(tile)
             entity = tile.getEntity()
-
-            if type(tile) is MowedGrass:
-                timeToRegrow = tile.get_time_to_regrow()
-                if timeToRegrow == 0:
-                    newTile = Tile.copyWithDifferentTypeOf(tile, Land)
-                    self.modifiedTiles.add(newTile)
-                    # self.mowed.remove(tile)
-                else:
-                    tile.decrease_time_to_regrow()
-                continue
+        
+            # handle regrowth
+            timeToRegrow = tile.get_time_to_regrow()
+            # print("time to regrow: ", timeToRegrow)
+            if timeToRegrow == 0 and type(tile) is not Land:
+                # newTile = Tile.copyWithDifferentTypeOf(tile, Land)
+                newTileType = tile.regrow()
+                print("regrowing to type: ", newTileType)
+                newTile = Tile.copyWithDifferentTypeOf(tile, newTileType)
+                self.modifiedTiles.add(newTile)
+            else:
+                tile.decrease_time_to_regrow()
 
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
@@ -156,12 +157,6 @@ class Simulation:
                            * (TerrainParameters.MAX_WATER_LEVEL - Water.getLevel()) / 2)
         modified = self.grid.updateTilesWithWaterLevel(self.waterLevel)
         self.modifiedTiles |= modified
-
-    def mowLand(self) -> None:
-        #modified = self.grid.updateMowedGrassTiles(self.mowed, MowedGrass)
-        #print("modified", modified)
-        # self.modifiedTiles |= modified
-        pass
 
     def evolution(self, entity: Entity) -> None:
         if entity.evolve():
