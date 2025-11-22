@@ -13,7 +13,7 @@
 		"color": "#E6CF6C",
 		"french_name": "Humain",
 		"preys": ["Crab", "Tree", "Fish"],
-		"spawn_weight": 0.5,
+		"spawn_weight": 0,
 		"preferred_temperature": 18,
 		"health_points": 100,
 		"loots": {},
@@ -29,7 +29,7 @@
 		"color": "#b3d5a4",
 		"french_name": "Arbre",
 		"valid_tiles": ["Land"],
-		"spawn_weight": 1,
+		"spawn_weight": 0,
 		"health_points": 300,
 		"loots": { "Wood": [5, 0.8] },
 		"symbol": "T"
@@ -85,7 +85,7 @@
 		"duplication_probability": 0.07,
 		"spontaneous_generation": 1,
 		"french_name": "Fleur",
-		"valid_tiles": ["Mountain"],
+		"valid_tiles": ["Land"],
 		"color": "#F7AB80",
 		"spawn_weight": 1,
 		"health_points": 10,
@@ -119,5 +119,19 @@
 		"health_points": 200,
 		"loots": {},
 		"symbol": "S"
+	},
+	"Hamster": {
+		"view_distance": 2,
+		"texture_path": ["hamster.png"],
+		"icon_texture_path": "hamster.png",
+		"french_name": "Hamster",
+		"valid_tiles": ["Land"],
+		"preys": ["Flower"],
+		"color": "#D2A679",
+		"spawn_weight": 0.2,
+		"preferred_temperature": 15,
+		"health_points": 30,
+		"loots": {},
+		"symbol": "M"
 	}
 }

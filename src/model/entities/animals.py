@@ -21,3 +21,6 @@ class Goat(Animal):
 
 class SnowLeopard(Animal):
     ...
+
+class Hamster(Animal):
+    ...
