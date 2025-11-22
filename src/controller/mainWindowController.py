@@ -8,7 +8,6 @@ from utils import Point, getPointsAdjacentTo
 
 from model.terrains.tile import Tile
 
-from model.crafting.crafts import FishingRod
 
 from parameters import ViewParameters
 
@@ -69,10 +68,7 @@ class MainWindowController:
         scenePos = self.graphicalGrid.mapToScene(event.pos())
         tile = self.getClickedTile(Point(scenePos.x(), scenePos.y()))
 
-        fish_click = False
-        if self.simulation.hasPlayer() and self.simulation.getPlayer().isFishing():
-            fish_click = True
-            self.raiseHook()
+
 
         if tile:
 
@@ -91,31 +87,6 @@ class MainWindowController:
                 self.graphicalGrid.chosenEntity = None
                 self.graphicalGrid.updateHighlighted()
 
-    def mouseReleaseEvent(self, event):
-        """End of hook throwing"""
-        if self.simulation.hasPlayer() and isinstance(self.simulation.getPlayer().getTargetedTileForHooking(), Water):
-            fallingPlace = self.simulation.getPlayer().throwHook()
-            if isinstance(self.simulation.getGrid().getTile(fallingPlace), Water):
-                self.graphicalGrid.drawHook(fallingPlace)
-            else:
-                print("pêche échouée")
-                self.graphicalGrid.stopHooking()
-                self.simulation.getPlayer().stopFishing()
-
-    def raiseHook(self):
-        tile = self.simulation.getGrid().getTile(self.simulation.getPlayer().getHookPlace())
-        if tile.hasEntity():
-            print("vous avez pêché " + str(self.simulation.getPlayer().getHookPlace()))
-            entity = tile.getEntity()
-            self.simulation.player.addInInventory(entity.loot())
-
-            tile.removeEntity()
-            entity.kill()
-            self.graphicalGrid.redraw(tile)
-        else:
-            print("NAK " + str(self.simulation.getPlayer().getHookPlace()))
-        self.simulation.getPlayer().stopFishing()
-        self.graphicalGrid.removeHook()
 
     def EntityMonitorPressEvent(self, event):
         ...
@@ -130,20 +101,6 @@ class MainWindowController:
             self.graphicalGrid.redraw(tile)
 
             self.graphicalGrid.updateHighlighted()
-        elif isinstance(tile, Water) and self.simulation.getPlayer().canFish():
-            self.simulation.getPlayer().startFishing(tile)
-            self.graphicalGrid.startHooking()
-
-    def unlockFishing(self):
-        if not self.simulation.getPlayer().abilityUnlockedRod and self.simulation.getPlayer().hasEnoughQuantityToCraft(FishingRod):
-            self.simulation.getPlayer().abilityUnlockedRod = True
-            self.simulation.getPlayer().removeFromInventory(FishingRod.getBlueprint())
-            return True
-        return False
-
-
-
-
 
 
 

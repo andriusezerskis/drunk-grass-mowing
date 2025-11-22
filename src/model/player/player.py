@@ -16,7 +16,6 @@ from model.entities.animal import Animal
 from model.terrains.tile import Tile
 from model.movable import Movable
 from model.crafting.loots import Loot
-from view.playerDockView import PlayerDockView
 
 from utils import getNormalizedVector
 
@@ -28,15 +27,7 @@ class Player(Movable):
         self.pos = pos
         self.grid = grid
         self.claimed_entity: Entity | None = None
-        self.inventory = {loot_class.__name__: 0 for loot_class in getTerminalSubclassesOfClass(Loot)}
 
-        self.abilityUnlockedRod = False
-        self._isFishing = False
-        self.startHookTime = None
-        self.hookVelocity = 0
-        self.hookDirection = None
-        self.targetedTileForHooking = None
-        self.hookPlace = None
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -99,51 +90,8 @@ class Player(Movable):
         return self.claimed_entity.getPreferredTemperature()
 
     def kill(self):
-        PlayerDockView.lageEntity(True)
-
-    def canFish(self):
-        return self.abilityUnlockedRod
-
-    def hasEnoughQuantityToCraft(self, item):
-        for material, quantity in item.getBlueprint().items():
-            if self.inventory.get(material) < quantity:
-                return False
-        return True
-
-    def craft(self, item):
-        if not self.hasEnoughQuantity(item):
-            return False
-        self.removeFromInventory(item.getBlueprint())
-
-    def isFishing(self):
-        return self._isFishing
-
-    def startFishing(self, tile):
-        if not self._isFishing:
-            self.stopFishing()
-            self.targetedTileForHooking = tile
-            self._isFishing = True
-            self.hookDirection = getNormalizedVector(tile.getPos() - self.pos)
-            self.startHookTime = time.time()
-
-    def throwHook(self):
-        self.hookVelocity = min(5 * (time.time() - self.startHookTime), 8)
-        self.hookPlace = self.pos + (self.hookDirection * self.hookVelocity)
-        return self.hookPlace
-
-    def getTargetedTileForHooking(self):
-        return self.targetedTileForHooking
-
-    def getHookPlace(self):
-        return self.hookPlace
-
-    def stopFishing(self):
-        self.hookVelocity = 0
-        self.hookDirection = 0
-        self.startHookTime = None
-        self._isFishing = False
-        self.targetedTileForHooking = None
-        self.hookPlace = None
+        pass
+        #PlayerDockView.lageEntity(True)
 
     def _reset(self, killed=False):
         if not killed:
@@ -154,5 +102,3 @@ class Player(Movable):
         self.pos = None
         self.claimed_entity = None
         self.inventory = {loot_class.__name__: 0 for loot_class in getTerminalSubclassesOfClass(Loot)}
-        self.abilityUnlockedRod = False
-        self.stopFishing()
