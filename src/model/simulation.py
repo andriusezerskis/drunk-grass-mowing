@@ -26,7 +26,7 @@ from model.grid import Grid
 from model.generator.gridGenerator import GridGenerator
 from model.generator.entitiesGenerator import EntitiesGenerator
 from model.terrains.tile import Tile
-from model.terrains.tiles import Water
+from model.terrains.tiles import MowedGrass, Water, Land
 from model.entities.entity import Entity
 from model.player.player import Player
 from model.renderMonitor import RenderMonitor
@@ -41,6 +41,7 @@ class Simulation:
         self.stepCount = 0
         self.modifiedTiles: set[Tile] = set()
         self.updatedEntities: set[Entity] = set()
+        self.mowed: set[Tile] = set()
         self.player = Player(None, self.grid)
         self.renderMonitor = RenderMonitor(gridSize, gridSize)
 
@@ -60,20 +61,43 @@ class Simulation:
     def step(self) -> None:
         self.modifiedTiles = set()
         self.updatedEntities = set()
+
         self.stepCount += 1
         self.getGrid().regionHandler.advanceTime()
         t = time.time()
         self.updateWaterLevel()
+        self.mowLand()
 
+        print("player position: ", self.player.pos)
+        
         for tile in self.grid:
             self.handleDisaster(tile)
             entity = tile.getEntity()
             if entity and not isinstance(entity, Player) and entity not in self.updatedEntities:
                 self.evolution(entity)
                 self.updatedEntities.add(entity)
+            # elif entity and isinstance(entity, Player) and type(tile) is Land:
+            #     # self.mowed.add(tile)
+            #     # add all visited tiles to mowed
+            #     for tile in self.player.visitedTiles:
+            #         self.mowed.add(tile)
+            #     self.addModifiedTiles(tile)
+            #     newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
+            #     self.modifiedTiles.add(newTile)
             elif not entity:
                 self.spontaneousGeneration(tile)
 
+        # handle mowed tiles
+        for tile in self.player.visitedTiles:
+            if type(tile) is Land:
+                self.mowed.add(tile)
+                self.addModifiedTiles(tile)
+                newTile = Tile.copyWithDifferentTypeOf(tile, MowedGrass)
+                self.modifiedTiles.add(newTile)
+        self.mowed = set()
+
+        print("mowed: ", self.mowed)
+        print(f"compute time : {time.time() - t}")
 
     def handleDisaster(self, tile: Tile):
         if not tile.getDisaster():
@@ -109,8 +133,6 @@ class Simulation:
             tile.addNewEntity(choice(validTypes))
             self.addModifiedTiles(tile)
 
-
-
     def getUpdatedTiles(self):
         return self.modifiedTiles
 
@@ -122,6 +144,12 @@ class Simulation:
                            * (TerrainParameters.MAX_WATER_LEVEL - Water.getLevel()) / 2)
         modified = self.grid.updateTilesWithWaterLevel(self.waterLevel)
         self.modifiedTiles |= modified
+
+    def mowLand(self) -> None:
+        #modified = self.grid.updateMowedGrassTiles(self.mowed, MowedGrass)
+        #print("modified", modified)
+        # self.modifiedTiles |= modified
+        pass
 
     def evolution(self, entity: Entity) -> None:
         if entity.evolve():

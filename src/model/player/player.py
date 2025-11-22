@@ -11,6 +11,7 @@ from overrides import override
 from model.disasters.bloodsplatter import BloodSplatter
 
 
+from model.terrains.tiles import MowedGrass
 from utils import Point, getTerminalSubclassesOfClass
 
 from model.entities.entity import Entity
@@ -30,7 +31,7 @@ class Player(Movable):
         self.pos = pos
         self.grid = grid
         self.claimed_entity: Entity | None = None
-
+        self.visitedTiles: list[Tile] = []
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -67,6 +68,14 @@ class Player(Movable):
                 self.grid.getTile(oldPosition).removeEntity()
                 self.grid.getTile(wantedPosition).setEntity(self)
                 self.pos = wantedPosition
+                # self.visitedTiles.append(self.grid.getTile(wantedPosition))
+                # print("visitedTiles", self.visitedTiles)
+                # if len(self.visitedTiles) > 10:
+                #     self.visitedTiles.pop(0)
+
+                # mark tile as mowedgrass
+                newTile = Tile.copyWithDifferentTypeOf(self.grid.getTile(wantedPosition), MowedGrass)
+                self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
                 return True
             return False
 
