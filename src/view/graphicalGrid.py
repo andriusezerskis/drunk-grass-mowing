@@ -77,6 +77,7 @@ class GraphicalGrid(QGraphicsView):
                         self.pixmapItems[y][x][i].hide()
 
         self.initNightMode()
+        self.midblackout = False
 
         start_time = time.time()
         self.drawGrid(grid)
@@ -201,7 +202,12 @@ class GraphicalGrid(QGraphicsView):
         assert isinstance(point, Point)
         self.getPixmapItem(point).hideEntity()
 
+    def midblackoutFunction(self):
+        self.midblackout = True
+        self.luminosityMode.setOpacity(0.5)
+
     def drunkblackout(self):
+        self.midblackout = False
         self.blackoutlaststep = True
         self.luminosityMode.setOpacity(1)
 

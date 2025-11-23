@@ -101,14 +101,17 @@ class Simulation:
         if GridController.getInstance().graphicalGrid.blackoutlaststep == True:
             GridController.getInstance().graphicalGrid.removeBlackout()
             
+        if GridController.getInstance().graphicalGrid.midblackout == True:
+            GridController.getInstance().graphicalGrid.drunkblackout()
+
 
         if (random() < self.player.alcoholismLevel / 100):
             if (random() > 0.5):
                 GridController.getInstance().zoomOut()
             else:
                 GridController.getInstance().zoomIn()
-            if (random() > 0.8):
-                GridController.getInstance().graphicalGrid.drunkblackout()
+            if (random() > 0.5):
+                GridController.getInstance().graphicalGrid.midblackoutFunction()
             GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos())
         
         # decrease alcoholism level over time

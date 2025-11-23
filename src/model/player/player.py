@@ -86,7 +86,7 @@ class Player(Movable):
                     self.chainsawSound.play()
                     self.updateAlcoholismLevel()
 
-                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
+                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity() or ( isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree) and player.strength > 0):
                     self.grid.getTile(oldPosition).removeEntity()
                     self.grid.getTile(wantedPosition).setEntity(self)
                     self.pos = wantedPosition
@@ -101,6 +101,7 @@ class Player(Movable):
                     currentTile.setEntity(self)
                     newTile.no_times_mowed = currentTile.no_times_mowed
                     self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
+
 
                 return True
             return False

@@ -76,7 +76,7 @@ class RenderMonitor:
 
         self.zoomIndex = 0
         self.zoomFactor = 1
-        self.zooms = [1, 4 / 3, 3 / 2, 2, 5 / 2]
+        self.zooms = [1, 4 / 3, 3 / 2, 2]
         self.playerZoomFactor = None
 
     def getUpperPoint(self):
