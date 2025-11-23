@@ -110,9 +110,6 @@ class Simulation:
             if (random() > 0.8):
                 GridController.getInstance().graphicalGrid.drunkblackout()
             GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos())
-
-
-            
         
         # decrease alcoholism level over time
         if self.player.alcoholismLevel > 0:

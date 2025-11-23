@@ -41,6 +41,7 @@ class Player(Movable):
         self.hamstersKilled = 0
         self.rewardGained = 0
         self.alcoholismLevel = 0 # percentage
+        self.money = 0
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -93,9 +94,10 @@ class Player(Movable):
                     # mark tile as mowedgrass
                     currentTile = self.grid.getTile(wantedPosition)
                     nextTileType = currentTile.mow()
-                    self.rewardGained += nextTileType.getReward()
+                    self.money += nextTileType.getReward()
 
                     newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
+
                     currentTile.setEntity(self)
                     newTile.no_times_mowed = currentTile.no_times_mowed
                     self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile

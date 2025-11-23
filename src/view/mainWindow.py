@@ -115,6 +115,7 @@ class Window(QMainWindow):
         self.simulation.step()
         self.updateGrid()
         self.updateMentalHealth(self.simulation.getPlayer().hamstersKilled)
+        self.updateMoney(self.simulation.getPlayer().money)
         #self.showTime()
 
     """
@@ -201,7 +202,6 @@ class Window(QMainWindow):
 
         self.mentalHealthBar = QProgressBar()
         self.mentalHealthBar.setRange(0, 100)
-        self.mentalHealthBar.setValue(0)
         self.mentalHealthBar.setValue(100)
 
         self.layout.addWidget(
@@ -211,6 +211,8 @@ class Window(QMainWindow):
         """Updates the health bar and changes color based on health."""
         self.setValue(health)
 
+    def updateMoney(self, money):
+        self.currencyLabel.setText(str(money))
         
 
     def updateMentalHealth(self,hamsterKilled):
