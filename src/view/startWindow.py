@@ -34,10 +34,8 @@ class StartWindow(QMainWindow):
         self.file = None
 
         # ---- input windows size ----
-        self.gridSizeWidth = 20
-        self.gridSizeHeight = 20
-
-
+        self.gridSizeWidth = 40
+        self.gridSizeHeight = 40
 
 
         container2 = QWidget()

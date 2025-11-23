@@ -112,8 +112,8 @@ class Window(QMainWindow):
         self.totalTime += 1
         self.simulation.step()
         self.updateGrid()
-        self.updateMentalHealth(self.simulation.getPlayer().hamstersKilled)
-        self.updateMoney(self.simulation.getPlayer().money)
+        self.updateMentalHealth(self.simulation.getPlayer().alcoholismLevel)
+        self.updateMoney(self.simulation.getPlayer().rewardGained)
         if self.simulation.getPlayer().alcoholismLevel > 0.6:
             self.timer.setInterval(ViewParameters.STEP_TIME // 2)
         else:
@@ -215,9 +215,9 @@ class Window(QMainWindow):
             self.mentalHealthBar, alignment=Qt.AlignmentFlag.AlignTop  | Qt.AlignmentFlag.AlignRight )
 
     def upgradeStrength(self):
-        if (self.simulation.getPlayer().money >= 1000):
+        if (self.simulation.getPlayer().rewardGained >= 1000):
             self.simulation.getPlayer().strength+=1
-            self.simulation.getPlayer().money -= 1000
+            self.simulation.getPlayer().rewardGained -= 1000
             self.upgradeStrengthBtn.setText("UPGRADED")
 
 
@@ -229,9 +229,10 @@ class Window(QMainWindow):
         self.currencyLabel.setText(str(money))
         
 
-    def updateMentalHealth(self,hamsterKilled):
-        mentalhealth = 100 - (hamsterKilled * 20)
-        self.mentalHealthBar.setValue(mentalhealth)
+    def updateMentalHealth(self,alcoholismLevel):
+        # mentalhealth = 100 - (hamsterKilled * 20)
+        # self.mentalHealthBar.setValue(mentalhealth)
+        mentalhealth = 100 - alcoholismLevel
         if mentalhealth > 60:
             self.mentalHealthBar.setStyleSheet("""
                 QProgressBar {
@@ -274,7 +275,6 @@ class Window(QMainWindow):
         self.zoomOutButton.clicked.connect(self.gridController.zoomOut)
         MainWindowController.getInstance().onZoomIn()
         MainWindowController.getInstance().onZoomOut()
-
 
     def closeEvent(self, event):
         self.pauseTimer()

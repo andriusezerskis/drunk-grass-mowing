@@ -83,6 +83,7 @@ class Player(Movable):
         # generate randomnumber between 0 and 1
         randomNumber = np.random.rand()
         tilesToMow = []
+        moved = False
         if (randomNumber < self.alcoholismLevel / 100):
             if (np.random.rand() < 0.5):
                 tilesToMow = self.getNeighboringTiles(radius=np.random.randint(0, 3))
@@ -92,15 +93,15 @@ class Player(Movable):
         else:
             numPossibleMovements = 0
 
-        if tilesToMow:
-            for drunkTile in tilesToMow:
-                # currentTile = self.grid.getTile(drunkTilePosition)
-                nextTileType = drunkTile.mow()
-                self.rewardGained += nextTileType.getReward()
-                # print("Current reward: ", self.rewardGained)
-                newTile = Tile.copyWithDifferentTypeOf(drunkTile, nextTileType)
-                newTile.no_times_mowed = drunkTile.no_times_mowed
-                self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
+        # if tilesToMow:
+        #     for drunkTile in tilesToMow:
+        #         # currentTile = self.grid.getTile(drunkTilePosition)
+        #         nextTileType = drunkTile.mow()
+        #         self.rewardGained += nextTileType.getReward()
+        #         # print("Current reward: ", self.rewardGained)
+        #         newTile = Tile.copyWithDifferentTypeOf(drunkTile, nextTileType)
+        #         newTile.no_times_mowed = drunkTile.no_times_mowed
+        #         self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
 
         currentTile = self.grid.getTile(self.pos)
         self.moved = False
@@ -141,10 +142,10 @@ class Player(Movable):
                     
                         # mark tile as mowedgrass
                         currentTile = self.grid.getTile(wantedPosition)
-                        print("Current tile type before mowing: ", type(currentTile))
+                        # print("Current tile type before mowing: ", type(currentTile))
                         nextTileType = currentTile.mow()
                         self.rewardGained += nextTileType.getReward()
-                        print("Current reward: ", self.rewardGained)
+                        # print("Current reward: ", self.rewardGained)
 
                         newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
                         currentTile.setEntity(self)
@@ -162,7 +163,7 @@ class Player(Movable):
         
     def updateAlcoholismLevel(self):
         if self.hamstersKilled == 1:
-            self.alcoholismLevel += 10
+            self.alcoholismLevel += 30
         elif self.hamstersKilled >= 2 and self.hamstersKilled < 5:
             self.alcoholismLevel *= 1.5
         elif self.hamstersKilled >= 5 and self.hamstersKilled < 10:
