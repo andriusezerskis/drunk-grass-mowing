@@ -35,6 +35,7 @@ class Window(QMainWindow):
         self.setWindowIcon(QIcon(ViewParameters.COW_TEXTURE_PATH))
         self.setWindowTitle(ViewText.MAIN_WINDOW_TITLE)
         self.renderingMonitor = simulation.getRenderMonitor()
+        self.simulation = simulation
 
         self.view = GraphicalGrid(
             gridSize, simulation.getGrid(), simulation, self.renderingMonitor)
@@ -52,7 +53,6 @@ class Window(QMainWindow):
 
 
         self.setCentralWidget(self.view)
-        self.simulation = simulation
         self.totalTime = 0
 
         self.fastF = False
@@ -184,8 +184,9 @@ class Window(QMainWindow):
         self.layout.addWidget(self.pauseButton)
 
         self.upgradeStrengthBtn = QPushButton("Upgrade Strength")
-        self.upgradeStrengthBtn.setCheckable(True)
-        self.upgradeStrengthBtn.clicked.connect(self.upgradeStrength())
+        self.upgradeStrengthBtn.clicked.connect(self.upgradeStrength)
+        self.layout.addWidget(self.upgradeStrengthBtn)
+
 
         """
         self.fastFbutton = QPushButton("⏩")
@@ -219,6 +220,7 @@ class Window(QMainWindow):
         if (self.simulation.getPlayer().money >= 1000):
             self.simulation.getPlayer().strength+=1
             self.simulation.getPlayer().money -= 1000
+            self.upgradeStrengthBtn.setText("UPGRADED")
 
 
     def update_health(self, health):

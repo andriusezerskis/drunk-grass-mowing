@@ -42,6 +42,7 @@ class Player(Movable):
         self.rewardGained = 0
         self.alcoholismLevel = 0 # percentage
         self.money = 0
+        self.strength = 0
 
     def isPlaying(self):
         return self.claimed_entity is not None
@@ -86,7 +87,7 @@ class Player(Movable):
                     self.chainsawSound.play()
                     self.updateAlcoholismLevel()
 
-                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity() or ( isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree) and player.strength > 0):
+                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity() or ( isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree) and self.strength > 0):
                     self.grid.getTile(oldPosition).removeEntity()
                     self.grid.getTile(wantedPosition).setEntity(self)
                     self.pos = wantedPosition
