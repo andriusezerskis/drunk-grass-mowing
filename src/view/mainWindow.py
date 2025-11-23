@@ -183,6 +183,10 @@ class Window(QMainWindow):
         self.pauseButton.clicked.connect(self.pauseTimer)
         self.layout.addWidget(self.pauseButton)
 
+        self.upgradeStrengthBtn = QPushButton("Upgrade Strength")
+        self.upgradeStrengthBtn.setCheckable(True)
+        self.upgradeStrengthBtn.clicked.connect(self.upgradeStrength())
+
         """
         self.fastFbutton = QPushButton("⏩")
         self.fastFbutton.setCheckable(True)
@@ -210,6 +214,12 @@ class Window(QMainWindow):
 
         self.layout.addWidget(
             self.mentalHealthBar, alignment=Qt.AlignmentFlag.AlignTop  | Qt.AlignmentFlag.AlignRight )
+
+    def upgradeStrength(self):
+        if (self.simulation.getPlayer().money >= 1000):
+            self.simulation.getPlayer().strength+=1
+            self.simulation.getPlayer().money -= 1000
+
 
     def update_health(self, health):
         """Updates the health bar and changes color based on health."""
