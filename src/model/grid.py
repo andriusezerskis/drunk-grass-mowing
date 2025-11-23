@@ -14,7 +14,6 @@ from model.regionHandler import RegionHandler
 
 from parameters import TerrainParameters
 
-
 class Grid:
     def __init__(self, gridSize: Point) -> None:
         self.tiles: List[List[Tile]] = []

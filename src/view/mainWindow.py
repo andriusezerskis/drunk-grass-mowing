@@ -236,8 +236,6 @@ class Window(QMainWindow):
         
 
     def updateMentalHealth(self,alcoholismLevel):
-        # mentalhealth = 100 - (hamsterKilled * 20)
-        # self.mentalHealthBar.setValue(mentalhealth)
         mentalhealth = 100 - alcoholismLevel
         self.mentalHealthBar.setValue(int(mentalhealth))
 
