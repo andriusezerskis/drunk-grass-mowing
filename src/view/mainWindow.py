@@ -233,6 +233,8 @@ class Window(QMainWindow):
         # mentalhealth = 100 - (hamsterKilled * 20)
         # self.mentalHealthBar.setValue(mentalhealth)
         mentalhealth = 100 - alcoholismLevel
+        self.mentalHealthBar.setValue(int(mentalhealth))
+
         if mentalhealth > 60:
             self.mentalHealthBar.setStyleSheet("""
                 QProgressBar {
