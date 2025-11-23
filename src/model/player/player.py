@@ -53,6 +53,8 @@ class Player(Movable):
         self.pos = tile.getPos()
         tile.removeEntity()
         tile.setEntity(self)
+        neighboringTiles: list[Tile] = []
+
 
     def removeClaimedEntity(self, killed=False):
         self._reset(killed)
@@ -93,15 +95,15 @@ class Player(Movable):
         else:
             numPossibleMovements = 0
 
-        # if tilesToMow:
-        #     for drunkTile in tilesToMow:
-        #         # currentTile = self.grid.getTile(drunkTilePosition)
-        #         nextTileType = drunkTile.mow()
-        #         self.rewardGained += nextTileType.getReward()
-        #         # print("Current reward: ", self.rewardGained)
-        #         newTile = Tile.copyWithDifferentTypeOf(drunkTile, nextTileType)
-        #         newTile.no_times_mowed = drunkTile.no_times_mowed
-        #         self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
+        if tilesToMow:
+            for drunkTile in tilesToMow:
+                # currentTile = self.grid.getTile(drunkTilePosition)
+                nextTileType = drunkTile.mow()
+                self.rewardGained += nextTileType.getReward()
+                # print("Current reward: ", self.rewardGained)
+                newTile = Tile.copyWithDifferentTypeOf(drunkTile, nextTileType)
+                newTile.no_times_mowed = drunkTile.no_times_mowed
+                self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
 
         currentTile = self.grid.getTile(self.pos)
         self.moved = False
@@ -113,8 +115,9 @@ class Player(Movable):
             wantedPositions = []
             for j in range(numPossibleMovements + 1):
                 wantedPositions.append(self.pos + movement * (j + 1))
+
             for i, wantedPosition in enumerate(wantedPositions):
-                print("processing wantedPosition: ", wantedPosition)
+                # print("processing wantedPosition: ", wantedPosition)
                 if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
                     self.treeFlag = False
                     if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
@@ -142,9 +145,14 @@ class Player(Movable):
                     
                         # mark tile as mowedgrass
                         currentTile = self.grid.getTile(wantedPosition)
+
+                        if currentTile.hasEntity() and isinstance(currentTile.getEntity(), Tree):
+                            if self.strength == 0:
+                                break
                         # print("Current tile type before mowing: ", type(currentTile))
                         nextTileType = currentTile.mow()
                         self.rewardGained += nextTileType.getReward()
+
                         # print("Current reward: ", self.rewardGained)
 
                         newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
@@ -163,7 +171,7 @@ class Player(Movable):
         
     def updateAlcoholismLevel(self):
         if self.hamstersKilled == 1:
-            self.alcoholismLevel += 30
+            self.alcoholismLevel = 30
         elif self.hamstersKilled >= 2 and self.hamstersKilled < 5:
             self.alcoholismLevel *= 1.5
         elif self.hamstersKilled >= 5 and self.hamstersKilled < 10:
@@ -172,7 +180,9 @@ class Player(Movable):
             self.alcoholismLevel *= 1.1
         elif self.hamstersKilled > 25:
             self.alcoholismLevel = 50
-        # self.alcoholismLevel = min(100, self.alcoholismLevel)
+        # print("Hamsters killed: ", self.hamstersKilled)
+        self.alcoholismLevel = min(100, self.alcoholismLevel)
+        #print("Alcoholism level updated to: ", self.alcoholismLevel)
 
     def addInInventory(self, loots: Dict[str, int]):
         for loot_name in loots:

@@ -7,6 +7,7 @@ Date: December 2023
 from random import choice, random
 from typing import Type
 import time
+import numpy as np
 
 from parameters import TerrainParameters
 
@@ -105,18 +106,21 @@ class Simulation:
             GridController.getInstance().graphicalGrid.drunkblackout()
 
 
-        if (random() < self.player.alcoholismLevel / 100):
-            if (random() > 0.5):
-                GridController.getInstance().zoomOut()
-            else:
-                GridController.getInstance().zoomIn()
-            if (random() > 0.5):
+        if (np.random.rand() < self.player.alcoholismLevel / 100):
+            if (np.random.rand() > 0.75):
+                if (np.random.rand() > 0.5):
+                    GridController.getInstance().zoomOut()
+                else:
+                    GridController.getInstance().zoomIn()
+            if (np.random.rand() < self.player.alcoholismLevel / 100):
                 GridController.getInstance().graphicalGrid.midblackoutFunction()
             GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos())
         
         # decrease alcoholism level over time
-        if self.player.alcoholismLevel > 0:
-            self.player.alcoholismLevel *= 0.95
+        if self.player.alcoholismLevel > 0 and self.player.alcoholismLevel < 75:
+            self.player.alcoholismLevel *= 0.97
+        else:
+            self.player.alcoholismLevel *= 0.99
 
     def handleDisaster(self, tile: Tile):
         if not tile.getDisaster():

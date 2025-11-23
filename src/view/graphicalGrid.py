@@ -217,8 +217,22 @@ class GraphicalGrid(QGraphicsView):
 
 
     def movePlayer(self, oldPos: Point, newPos: Point):
+        # between oldPos and newPos, get all traversed tile positions
+        allTraversedTiles = []
+        x1, y1 = oldPos.x(), oldPos.y()
+        x2, y2 = newPos.x(), newPos.y()
+        if x1 != x2: # we moved over x
+            for x in range(min(x1, x2), max(x1, x2) + 1):
+                allTraversedTiles.append(Point(x, y1))
+        if y1 != y2: # we moved over y
+            for y in range(min(y1, y2), max(y1, y2) + 1):
+                allTraversedTiles.append(Point(x2, y))
+        # print("Traversed tiles:", allTraversedTiles)
+
         self.getPixmapItem(oldPos).hideEntity()
-        self.redraw(self.simulation.getGrid().getTile(newPos))
+        # self.redraw(self.simulation.getGrid().getTile(newPos))
+        for pos in allTraversedTiles:
+            self.redraw(self.simulation.getGrid().getTile(pos))
         self.chosenEntity = self.simulation.player
         self.updateHighlighted()
 

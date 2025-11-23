@@ -30,7 +30,7 @@
 		"level": 0.65,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 15,
+		"time_to_regrow": 25,
 		"reward": 20
 	},
 	"MowedGrass2": {
@@ -38,7 +38,7 @@
 		"level": 0.66,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 20,
+		"time_to_regrow": 30,
 		"reward": 7.5
 	},
 	"MowedGrass3": {
@@ -46,7 +46,7 @@
 		"level": 0.67,
 		"filter_color": "#ffffff00",
 		"ascending_gradient": 0,
-		"time_to_regrow": 25,
+		"time_to_regrow": 24,
 		"reward": 1
 	},
 	"MowedGrass4": {
