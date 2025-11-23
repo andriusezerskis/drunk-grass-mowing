@@ -170,7 +170,6 @@ class Window(QMainWindow):
     def reloadConfigs():
         GenericParameters.reloadAllDicts()
         ParametrizedDrawable.reloadAllDicts()
-        print("Configuration rechargée !")
 
     def drawButtons(self):
         

@@ -34,8 +34,8 @@ class StartWindow(QMainWindow):
         self.file = None
 
         # ---- input windows size ----
-        self.gridSizeWidth = 80
-        self.gridSizeHeight = 80
+        self.gridSizeWidth = 50
+        self.gridSizeHeight = 50
 
 
 

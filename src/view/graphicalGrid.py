@@ -46,6 +46,7 @@ class GraphicalGrid(QGraphicsView):
     tileRenderers = [ClassicTileRenderer,DepthTileRenderer, UnfilteredTerrainTileRenderer]
 
     def __init__(self, gridSize: Point, grid: Grid, simulation: Simulation, renderingMonitor: RenderMonitor):
+        self.blackoutlaststep = False
 
         self.luminosityMode = None
         self.simulation = simulation
@@ -159,7 +160,7 @@ class GraphicalGrid(QGraphicsView):
         transform.scale(scale * self.gridSize.x(),
                         scale * self.gridSize.y())
         self.luminosityMode.setTransform(transform)
-        self.luminosityMode.setOpacity(0.7)
+        self.luminosityMode.setOpacity(0)
 
     def updateGrid(self, updatedTiles: Set[Tile]):
         if self.getCurrentTileRenderer().mustNotBeUpdated():
@@ -199,22 +200,15 @@ class GraphicalGrid(QGraphicsView):
     def removeEntity(self, point: Point):
         assert isinstance(point, Point)
         self.getPixmapItem(point).hideEntity()
-    def nightMode(self, hour: int):
-        opacity = self.luminosityMode.opacity()
-        if hour == ViewParameters.SUNSET_MODE_START:
-            self.luminosityMode.setPixmap(
-                PixmapUtils.getPixmapFromRGBHex(ViewParameters.SUNSET_MODE_COLOR))
-            self.luminosityMode.setOpacity(0.1)
-        if hour == ViewParameters.NIGHT_MODE_START:
-            self.luminosityMode.setPixmap(
-                PixmapUtils.getPixmapFromRGBHex(ViewParameters.NIGHT_MODE_COLOR))
-            self.luminosityMode.setOpacity(0.1)
-        elif hour == ViewParameters.NIGHT_MODE_FINISH:
-            self.luminosityMode.setOpacity(0)
-        elif hour > ViewParameters.NIGHT_MODE_START or hour < ViewParameters.MIDDLE_OF_THE_NIGHT - 2:
-            self.luminosityMode.setOpacity(opacity + 0.1)
-        elif ViewParameters.MIDDLE_OF_THE_NIGHT + 2 < hour < ViewParameters.NIGHT_MODE_FINISH:
-            self.luminosityMode.setOpacity(opacity - 0.1)
+
+    def drunkblackout(self):
+        self.blackoutlaststep = True
+        self.luminosityMode.setOpacity(1)
+
+    def removeBlackout(self):
+        self.blackoutlaststep = False
+        self.luminosityMode.setOpacity(0)
+
 
     def movePlayer(self, oldPos: Point, newPos: Point):
         self.getPixmapItem(oldPos).hideEntity()

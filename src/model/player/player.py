@@ -67,7 +67,6 @@ class Player(Movable):
 
     def move(self, movement: Point):
         currentTile = self.grid.getTile(self.pos)
-        # print("current tile type", currentTile.get_current_type())
         for i in self.pos:
             oldPosition = copy(self.pos)
             wantedPosition = self.pos + movement
@@ -79,15 +78,12 @@ class Player(Movable):
                     self.sound = QSoundEffect()
                     self.chainsawSound = QSoundEffect()
                     self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
-                    print("sound_effects/chainsaw"+str(random.randint(1, 2))+".wav")
                     self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1, 2))+".wav"))
                     self.sound.setVolume(0.5)
                     self.chainsawSound.setVolume(0.5)
                     self.sound.play()
                     self.chainsawSound.play()
-                    print("Hamsters killed: ", self.hamstersKilled)
                     self.updateAlcoholismLevel()
-                    print("Current alcoholism level: ", self.alcoholismLevel)
 
                 if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
                     self.grid.getTile(oldPosition).removeEntity()
@@ -98,7 +94,6 @@ class Player(Movable):
                     currentTile = self.grid.getTile(wantedPosition)
                     nextTileType = currentTile.mow()
                     self.rewardGained += nextTileType.getReward()
-                    print("Current reward: ", self.rewardGained)
 
                     newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
                     currentTile.setEntity(self)

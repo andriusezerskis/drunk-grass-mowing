@@ -66,7 +66,6 @@ class Simulation:
         t = time.time()
         self.updateWaterLevel()
         
-        print("player position: ", self.player.pos)
 
         for tile in self.grid:
             self.handleDisaster(tile)
@@ -74,7 +73,6 @@ class Simulation:
         
             # handle regrowth
             timeToRegrow = tile.get_time_to_regrow()
-            # print("time to regrow: ", timeToRegrow)
             if timeToRegrow == 0 and type(tile) is not Land:
                 # newTile = Tile.copyWithDifferentTypeOf(tile, Land)
                 newTileType = tile.regrow()
@@ -100,14 +98,20 @@ class Simulation:
         #         self.modifiedTiles.add(newTile)
         # self.mowed = set()
 
-        print("mowed: ", self.mowed)
-        print(f"compute time : {time.time() - t}")
+        if GridController.getInstance().graphicalGrid.blackoutlaststep == True:
+            GridController.getInstance().graphicalGrid.removeBlackout()
+            
+
         if (random() < self.player.alcoholismLevel / 100):
             if (random() > 0.5):
                 GridController.getInstance().zoomOut()
             else:
                 GridController.getInstance().zoomIn()
+            if (random() > 0.8):
+                GridController.getInstance().graphicalGrid.drunkblackout()
             GridController.getInstance().renderingMonitor.centerOnPoint(self.player.getPos())
+
+
             
         
         # decrease alcoholism level over time

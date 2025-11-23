@@ -76,7 +76,7 @@ class RenderMonitor:
 
         self.zoomIndex = 0
         self.zoomFactor = 1
-        self.zooms = [1, 4 / 3, 3 / 2, 2, 5 / 2, 2]
+        self.zooms = [1, 4 / 3, 3 / 2, 2, 5 / 2]
         self.playerZoomFactor = None
 
     def getUpperPoint(self):
@@ -146,7 +146,7 @@ class RenderMonitor:
         return self.getZoomIndex() == len(self.zooms) - 1
 
     def isMinimumZoomIndex(self):
-        return self.getZoomIndex() == 2
+        return self.getZoomIndex() == 0
 
     def getZoomFactor(self):
         return self.playerZoomFactor if self.playerZoomFactor is not None else self.zoomFactor
