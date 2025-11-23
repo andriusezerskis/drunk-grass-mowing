@@ -113,6 +113,7 @@ class Player(Movable):
             for i, wantedPosition in enumerate(wantedPositions):
                 print("processing wantedPosition: ", wantedPosition)
                 if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
+                    self.treeFlag = False
                     if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
                         disasterType = BloodSplatter(1)
                         disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
@@ -131,8 +132,9 @@ class Player(Movable):
                         print("Current alcoholism level: ", self.alcoholismLevel)
 
                     if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
-                        # self.grid.getTile(oldPosition).removeEntity()
-                        # self.grid.getTile(wantedPosition).setEntity(self)
+                        self.grid.getTile(oldPosition).removeEntity()
+                        self.grid.getTile(wantedPosition).setEntity(self)
+                        self.treeFlag = True
                         self.pos = wantedPosition
                     
                         # mark tile as mowedgrass
@@ -147,9 +149,7 @@ class Player(Movable):
                         newTile.no_times_mowed = currentTile.no_times_mowed
                         self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
                     moved = True
-                    if i == len(wantedPositions) - 1:
-                        self.grid.getTile(oldPosition).removeEntity()
-                        self.grid.getTile(wantedPosition).setEntity(self)
+
             if moved:
                 return True
             return False
