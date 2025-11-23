@@ -79,7 +79,7 @@ class Player(Movable):
                     self.sound = QSoundEffect()
                     self.chainsawSound = QSoundEffect()
                     self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
-                    self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1, 2))+".wav"))
+                    self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1,2))+".wav"))
                     self.sound.setVolume(0.5)
                     self.chainsawSound.setVolume(0.5)
                     self.sound.play()
