@@ -28,7 +28,6 @@ from controller.gridController import GridController
 from controller.mainWindowController import MainWindowController
 
 
-
 class Window(QMainWindow):
     def __init__(self, gridSize: Point, simulation: Simulation):
         super().__init__()
@@ -101,7 +100,6 @@ class Window(QMainWindow):
         self.recurringTimer()
 
     def pauseTimer(self):
-
         if self.paused:
             self.paused = False
             self.timer.start()

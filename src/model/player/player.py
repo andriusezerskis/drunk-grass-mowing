@@ -24,6 +24,7 @@ from model.entities.animals import Hamster
 from model.terrains.tile import Tile
 from model.movable import Movable
 from model.crafting.loots import Loot
+import numpy as np
 
 from utils import getNormalizedVector
 from model.player.finance import Finance
@@ -66,44 +67,90 @@ class Player(Movable):
 
     def getTile(self):
         return self.grid.getTile(self.pos)
+    
+    def getNeighboringTiles(self, radius: int = 1) -> list[Tile]:
+        neighboringTiles: list[Tile] = []
+        for dx in range(-radius, radius + 1):
+            for dy in range(-radius, radius + 1):
+                if dx == 0 and dy == 0:
+                    continue
+                neighborPos = Point(self.pos.x() + dx, self.pos.y() + dy)
+                if self.grid.isInGrid(neighborPos):
+                    neighboringTiles.append(self.grid.getTile(neighborPos))
+        return neighboringTiles
 
     def move(self, movement: Point):
+        # generate randomnumber between 0 and 1
+        randomNumber = np.random.rand()
+        tilesToMow = []
+        if (randomNumber < self.alcoholismLevel / 100):
+            if (np.random.rand() < 0.5):
+                tilesToMow = self.getNeighboringTiles(radius=np.random.randint(0, 3))
+        
+        if (np.random.rand() < self.alcoholismLevel / 100):
+            numPossibleMovements = np.random.randint(1, 3) # [0, 1, 2]
+        else:
+            numPossibleMovements = 0
+
+        if tilesToMow:
+            for drunkTile in tilesToMow:
+                # currentTile = self.grid.getTile(drunkTilePosition)
+                nextTileType = drunkTile.mow()
+                self.rewardGained += nextTileType.getReward()
+                # print("Current reward: ", self.rewardGained)
+                newTile = Tile.copyWithDifferentTypeOf(drunkTile, nextTileType)
+                newTile.no_times_mowed = drunkTile.no_times_mowed
+                self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
+
         currentTile = self.grid.getTile(self.pos)
         for i in self.pos:
             oldPosition = copy(self.pos)
-            wantedPosition = self.pos + movement
-            if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
-                if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
-                    disasterType = BloodSplatter(1)
-                    disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
-                    self.hamstersKilled += 1
-                    self.sound = QSoundEffect()
-                    self.chainsawSound = QSoundEffect()
-                    self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
-                    self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1,2))+".wav"))
-                    self.sound.setVolume(0.5)
-                    self.chainsawSound.setVolume(0.5)
-                    self.sound.play()
-                    self.chainsawSound.play()
-                    self.updateAlcoholismLevel()
+            # wantedPosition = self.pos + movement
+            # compute numPossibleMovements number of movements in the same direction
+            wantedPositions = []
+            for j in range(numPossibleMovements + 1):
+                wantedPositions.append(self.pos + movement * (j + 1))
+            for i, wantedPosition in enumerate(wantedPositions):
+                print("processing wantedPosition: ", wantedPosition)
+                if (self.grid.isInGrid(wantedPosition) and self.isValidTileType(type(self.grid.getTile(wantedPosition)))):
+                    if (self.grid.getTile(wantedPosition).hasEntity() and isinstance(self.grid.getTile(wantedPosition).getEntity(), Hamster)):
+                        disasterType = BloodSplatter(1)
+                        disasterType.applyDisaster(self.grid.getTile(wantedPosition), 1)
+                        self.hamstersKilled += 1
+                        self.sound = QSoundEffect()
+                        self.chainsawSound = QSoundEffect()
+                        self.sound.setSource(QUrl.fromLocalFile("sound_effects/hamster_death.wav"))
+                        print("sound_effects/chainsaw"+str(random.randint(1, 2))+".wav")
+                        self.chainsawSound.setSource(QUrl.fromLocalFile("sound_effects/crowbar"+str(random.randint(1, 2))+".wav"))
+                        self.sound.setVolume(0.5)
+                        self.chainsawSound.setVolume(0.5)
+                        self.sound.play()
+                        self.chainsawSound.play()
+                        print("Hamsters killed: ", self.hamstersKilled)
+                        self.updateAlcoholismLevel()
+                        print("Current alcoholism level: ", self.alcoholismLevel)
 
-                if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity() or ( isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree) and self.strength > 0):
-                    self.grid.getTile(oldPosition).removeEntity()
-                    self.grid.getTile(wantedPosition).setEntity(self)
-                    self.pos = wantedPosition
-                
-                    # mark tile as mowedgrass
-                    currentTile = self.grid.getTile(wantedPosition)
-                    nextTileType = currentTile.mow()
-                    self.money += nextTileType.getReward()
+                    if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
+                        # self.grid.getTile(oldPosition).removeEntity()
+                        # self.grid.getTile(wantedPosition).setEntity(self)
+                        self.pos = wantedPosition
+                    
+                        # mark tile as mowedgrass
+                        currentTile = self.grid.getTile(wantedPosition)
+                        print("Current tile type before mowing: ", type(currentTile))
+                        nextTileType = currentTile.mow()
+                        self.rewardGained += nextTileType.getReward()
+                        print("Current reward: ", self.rewardGained)
 
-                    newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
-
-                    currentTile.setEntity(self)
-                    newTile.no_times_mowed = currentTile.no_times_mowed
-                    self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
-
-
+                        newTile = Tile.copyWithDifferentTypeOf(currentTile, nextTileType)
+                        currentTile.setEntity(self)
+                        newTile.no_times_mowed = currentTile.no_times_mowed
+                        self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
+                    moved = True
+                    if i == len(wantedPositions) - 1:
+                        self.grid.getTile(oldPosition).removeEntity()
+                        self.grid.getTile(wantedPosition).setEntity(self)
+            if moved:
                 return True
             return False
         
@@ -116,9 +163,9 @@ class Player(Movable):
             self.alcoholismLevel *= 1.2
         elif self.hamstersKilled >= 10:
             self.alcoholismLevel *= 1.1
-        elif self.hamstersKilled == 25:
+        elif self.hamstersKilled > 25:
             self.alcoholismLevel = 50
-        self.alcoholismLevel = min(100, self.alcoholismLevel)
+        # self.alcoholismLevel = min(100, self.alcoholismLevel)
 
     def addInInventory(self, loots: Dict[str, int]):
         for loot_name in loots:

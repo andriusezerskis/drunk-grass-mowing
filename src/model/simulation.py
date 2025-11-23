@@ -116,7 +116,7 @@ class Simulation:
         
         # decrease alcoholism level over time
         if self.player.alcoholismLevel > 0:
-            self.player.alcoholismLevel *= 0.9
+            self.player.alcoholismLevel *= 0.95
 
     def handleDisaster(self, tile: Tile):
         if not tile.getDisaster():
