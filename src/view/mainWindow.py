@@ -116,6 +116,11 @@ class Window(QMainWindow):
         self.updateGrid()
         self.updateMentalHealth(self.simulation.getPlayer().hamstersKilled)
         self.updateMoney(self.simulation.getPlayer().money)
+        if self.simulation.getPlayer().alcoholismLevel > 0.6:
+            self.timer.setInterval(ViewParameters.STEP_TIME // 2)
+        else:
+            self.timer.setInterval(ViewParameters.STEP_TIME)
+
         #self.showTime()
 
     """
@@ -135,7 +140,6 @@ class Window(QMainWindow):
             self.timebutton.setText(f"Jour {nb_days} - {hour}h")
         #self.view.nightMode(int(hour))
     """
-    """
     def fastForward(self):
         if self.fastF:
             self.timer.setInterval(ViewParameters.STEP_TIME)
@@ -144,7 +148,7 @@ class Window(QMainWindow):
         else:
             self.timer.setInterval(ViewParameters.STEP_TIME // 2)
             self.fastF = True
-    """
+
     def changeTileRenderer(self):
         if not self.simulation.hasPlayer():
             self.view.changeTileRenderer()
