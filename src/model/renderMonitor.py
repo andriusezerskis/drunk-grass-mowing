@@ -114,7 +114,7 @@ class RenderMonitor:
 
         self.renderingSection = Cuboid(upper, lower)
 
-    def setOnZoomIndex(self, index=3):
+    def setOnZoomIndex(self, index=1):
         oldZoom = self.getZoomIndex()
         self.zoomIndex = index
         difference = self.getZoomIndex() - oldZoom
