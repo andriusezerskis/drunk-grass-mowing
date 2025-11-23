@@ -7,7 +7,7 @@ Date: December 2023
 import time
 from PyQt6.QtWidgets import QMainWindow, QPushButton, QHBoxLayout, QMessageBox, QLabel, QVBoxLayout,QProgressBar
 from PyQt6.QtCore import Qt, QTimer, QUrl
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtGui import QMovie, QFont
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput, QSoundEffect
 
@@ -58,20 +58,17 @@ class Window(QMainWindow):
         self.paused = False
 
         self.drawButtons2()
-        
+        self.oldHamsterKilled =0
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.addLayout(self.layout)
         self.animationLabel = QLabel()
         self.animationLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
 
-        self.movie = QMovie("text_gifs/grass_kill.gif")
-        self.animationLabel.setMovie(self.movie)
+        self.animationLabel.setPixmap(QPixmap("text_gifs/blood.png"))
         self.animationLabel.setScaledContents(True)
-        self.animationLabel.resize(300,300)
         self.animationLabel.setStyleSheet("background: transparent;")
-        self.movie.start()
-        self.animationLabel.setHidden(True)
+        self.animationLabel.setHidden(False)
 
         self.music = QMediaPlayer()
         self.audioOutput = QAudioOutput()
@@ -114,6 +111,7 @@ class Window(QMainWindow):
         self.updateGrid()
         self.updateMentalHealth(self.simulation.getPlayer().alcoholismLevel)
         self.updateMoney(self.simulation.getPlayer().rewardGained)
+        self.activateBlood()
         if self.simulation.getPlayer().alcoholismLevel > 0.6:
             self.timer.setInterval(ViewParameters.STEP_TIME // 2)
         else:
@@ -168,6 +166,14 @@ class Window(QMainWindow):
 
     def commandsCallback(self):
         self.commands.show()
+
+    def activateBlood(self):
+        if (self.simulation.getPlayer().hamstersKilled > self.oldHamsterKilled):
+            self.oldHamsterKilled = self.simulation.getPlayer().hamstersKilled
+            self.animationLabel.setHidden(False)
+        else:
+            self.animationLabel.setHidden(True)
+
 
     @staticmethod
     def reloadConfigs():
