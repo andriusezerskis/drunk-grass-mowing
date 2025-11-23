@@ -103,6 +103,8 @@ class Player(Movable):
                 self.grid.tiles[drunkTile.getPos().y()][drunkTile.getPos().x()] = newTile
 
         currentTile = self.grid.getTile(self.pos)
+        self.moved = False
+
         for i in self.pos:
             oldPosition = copy(self.pos)
             # wantedPosition = self.pos + movement
@@ -132,9 +134,9 @@ class Player(Movable):
                         print("Current alcoholism level: ", self.alcoholismLevel)
 
                     if (self.grid.getTile(wantedPosition).hasEntity() and not isinstance(self.grid.getTile(wantedPosition).getEntity(), Tree)) or not self.grid.getTile(wantedPosition).hasEntity():
-                        self.grid.getTile(oldPosition).removeEntity()
-                        self.grid.getTile(wantedPosition).setEntity(self)
-                        self.treeFlag = True
+                        # self.grid.getTile(oldPosition).removeEntity()
+                        # self.grid.getTile(wantedPosition).setEntity(self)
+                        # self.treeFlag = True
                         self.pos = wantedPosition
                     
                         # mark tile as mowedgrass
@@ -148,9 +150,13 @@ class Player(Movable):
                         currentTile.setEntity(self)
                         newTile.no_times_mowed = currentTile.no_times_mowed
                         self.grid.tiles[wantedPosition.y()][wantedPosition.x()] = newTile
-                    moved = True
+                    self.moved = True
 
-            if moved:
+                    if i == len(wantedPositions) - 1:
+                        self.grid.getTile(oldPosition).removeEntity()
+                        self.grid.getTile(wantedPosition).setEntity(self)
+
+            if self.moved:
                 return True
             return False
         

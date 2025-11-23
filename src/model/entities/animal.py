@@ -65,11 +65,29 @@ class Animal(Entity, ABC):
                     self._local_information["valid_movement_tiles"].append(
                         tile)
                 continue
+            if self.isPrey(type(entity)):
+                self._local_information["preys"]["viewable"].add(entity)
+                if self.getPos().isNextTo(tile.getPos()):
+                    self._local_information["preys"]["adjacent"].add(entity)
+                    if entity.canBeEaten():
+                        self._local_information["preys"]["eatable"].add(entity)
 
+
+
+
+
+            if isinstance(entity, Animal) and entity.isPrey(type(self)):
+                self._local_information["predators"]["viewable"].add(entity)
+                if self.getPos().isNextTo(tile.getPos()):
+                    self._local_information["predators"]["adjacent"].add(
+                        entity)
+                        
             if type(entity) is type(self) and entity.isFitForReproduction():
                 self._local_information["mates"]["viewable"].add(entity)
                 if self.getPos().isNextTo(tile.getPos()):
                     self._local_information["mates"]["adjacent"].add(entity)
+
+            
 
     def _scoreMove(self) -> float:
         if not self.canMove():
