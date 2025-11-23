@@ -27,25 +27,7 @@ from view.graphicalGrid import GraphicalGrid
 from controller.gridController import GridController
 from controller.mainWindowController import MainWindowController
 
-class imgButton(QPushButton):
-    def __init__(self, img, text, parent):
-        super(imgButton, self).__init__(parent)
-        # Create a QHBoxLayout instance
-        horizontalLayout = QHBoxLayout(self)
 
-        # Add icon/image to the layout (Left)
-        icon = QIcon(img)
-        pixmap = icon.pixmap(10, 10)
-        self.iconLabelL = QLabel(self)
-        self.iconLabelL.setPixmap(pixmap)
-        horizontalLayout.addWidget(self.iconLabelL, 0) # (stretch factor 0)
-
-        # Add label to the layout (Center)
-        self.iconLabel = QLabel(text)
-        self.iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        horizontalLayout.addWidget(self.iconLabel, 1)
-
-    
 class Window(QMainWindow):
     def __init__(self, gridSize: Point, simulation: Simulation):
         super().__init__()
@@ -118,7 +100,6 @@ class Window(QMainWindow):
         self.recurringTimer()
 
     def pauseTimer(self):
-
         if self.paused:
             self.paused = False
             self.timer.start()
